@@ -103,7 +103,7 @@ def binary_accuracy(preds, y):
     
     #round predictions to the closest integer
     
-    rounded_preds = (torch.max(preds, 1)[1].view(target.size())
+    rounded_preds = torch.max(preds, 1)[1].view(target.size())
     correct = (rounded_preds.data == y.data).float() #convert into float for division
     #print(len((y.data).cpu().numpy()))
     f1=f1_score((y.data).cpu().numpy(),(rounded_preds.data).cpu().numpy(),average='binary')
