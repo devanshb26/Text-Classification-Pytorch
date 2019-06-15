@@ -85,7 +85,7 @@ output_size = 1
 hidden_size = 256
 N_LAYERS = 2
 DROPOUT = 0.2
-embedding_length = 100
+embedding_length = 300
 
 model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
 # loss_fn = F.cross_entropy
