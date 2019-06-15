@@ -35,7 +35,7 @@ class SelfAttention(nn.Module):
 		self.dropout = nn.Dropout(dropout)
 		self.dropout_embd = nn.Dropout(0.5)
 		self.relu=nn.ReLU()
-		self.bilstm = nn.LSTM(embedding_length, hidden_size, dropout=self.dropout, bidirectional=True)
+		self.bilstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,dropout=dropout, bidirectional=True)
 		# We will use da = 350, r = 30 & penalization_coeff = 1 as per given in the self-attention original ICLR paper
 		self.W_s1 = nn.Linear(2*hidden_size, 350)
 		self.W_s2 = nn.Linear(350, 30)
