@@ -263,7 +263,7 @@ for epoch in range(N_EPOCHS):
 
   train_loss, train_acc,train_f1 = train(model, train_iter, optimizer, criterion)
   valid_loss, valid_acc,valid_f1,f1,f1_macro = evaluate(model, valid_iter, criterion)
-
+  test_loss, test_acc,test_f1,f1_test,f1_macro_test = evaluate(model, test_iter, criterion)
   end_time = time.time()
 
   epoch_mins, epoch_secs = epoch_time(start_time, end_time)
@@ -278,8 +278,9 @@ for epoch in range(N_EPOCHS):
 #     print(epoch)
 #     break
   print(f'Epoch: {epoch+1:02} | Epoch Time: {epoch_mins}m {epoch_secs}s')
-  print(f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}%| Train_f1 : {train_f1:.4f}')
-  print(f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}%| Valid_f1 : {valid_f1:.4f}')
+  print(f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}% | Train_f1 : {train_f1:.4f}')
+  print(f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}% | Valid_f1 : {f1:.4f}')
+  print(f'\t test. Loss: {test_loss:.3f} |  test. Acc: {test_acc*100:.2f}% | test_f1 : {f1_test:.4f}')
 
 
 
