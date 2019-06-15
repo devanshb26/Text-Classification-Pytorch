@@ -34,6 +34,7 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 ######################################
 from models.LSTM import LSTMClassifier
+from models.LSTM_Attn import AttentionModel
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data.load_dataset()
 
@@ -84,7 +85,7 @@ output_size = 1
 hidden_size = 256
 embedding_length = 100
 
-model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings)
+model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
