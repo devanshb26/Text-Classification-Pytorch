@@ -33,8 +33,8 @@ class LSTMClassifier(nn.Module):
 		self.word_embeddings.weight = nn.Parameter(weights, requires_grad=False) # Assigning the look-up table to the pre-trained GloVe word embedding.
 		self.lstm = nn.LSTM(embedding_length, hidden_size,dropout=dropout)
 		self.fc1 = nn.Linear(hidden_size, 150)
-# 		self.fc2 = nn.Linear(150, 25)
-		self.label = nn.Linear(150, output_size)
+ 		self.fc2 = nn.Linear(150, 25)
+		self.label = nn.Linear(25, output_size)
 		
 	def forward(self, input_sentence, batch_size=None):
 	
@@ -68,8 +68,8 @@ class LSTMClassifier(nn.Module):
 # 	        final_hidden_state=self.dropout(final_hidden_state)
 		final_output = self.relu(self.fc1(final_hidden_state[-1]))
 		final_output=self.dropout(final_output)
-# 		final_output = self.relu(self.fc2(final_output))
-# 		final_output=self.dropout(final_output)
+		final_output = self.relu(self.fc2(final_output))
+		final_output=self.dropout(final_output)
 		final_output = self.label(final_output) # final_hidden_state.size() = (1, batch_size, hidden_size) & final_output.size() = (batch_size, output_size)
 		
 		return final_output
