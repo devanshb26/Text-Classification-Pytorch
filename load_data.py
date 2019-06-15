@@ -65,7 +65,7 @@ def load_dataset(test_sen=None):
     
 #     tokenize = lambda x: x.split()
     TEXT = data.Field(sequential=True, tokenize=tokenize_en, lower=True, include_lengths=True, batch_first=True, fix_length=200)
-    LABEL = data.LabelField(dtype=torch.LongTensor)
+    LABEL = data.LabelField(dtype=torch.float)
     fields = [(None,None),(None,None),('text', TEXT),('label', LABEL)]
     train_data, valid_data, test_data = data.TabularDataset.splits(
                                         path = '',
@@ -79,8 +79,9 @@ def load_dataset(test_sen=None):
                                         format = 'csv',
                                         fields = fields,
                                         skip_header = True
-)
-    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=100),unk_init = torch.Tensor.normal_)
+) 
+    print(vars(train_data[0]))
+    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=100))
     LABEL.build_vocab(train_data)
 
     word_embeddings = TEXT.vocab.vectors
