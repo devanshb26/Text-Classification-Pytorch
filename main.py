@@ -34,7 +34,7 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 ######################################
 from models.LSTM import LSTMClassifier
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data.load_dataset()
 
 # def clip_gradient(model, clip_value):
