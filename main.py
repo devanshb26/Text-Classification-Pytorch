@@ -77,7 +77,7 @@ learning_rate = 2e-5
 batch_size = 32
 output_size = 2
 hidden_size = 256
-embedding_length = 300
+embedding_length = 100
 
 model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings)
 loss_fn = F.cross_entropy
