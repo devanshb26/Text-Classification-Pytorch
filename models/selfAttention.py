@@ -32,7 +32,9 @@ class SelfAttention(nn.Module):
 
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
-		self.dropout = 0.8
+		self.dropout = nn.Dropout(dropout)
+		self.dropout_2=nn.Dropout(dropout_2)
+		self.relu=nn.ReLU()
 		self.bilstm = nn.LSTM(embedding_length, hidden_size, dropout=self.dropout, bidirectional=True)
 		# We will use da = 350, r = 30 & penalization_coeff = 1 as per given in the self-attention original ICLR paper
 		self.W_s1 = nn.Linear(2*hidden_size, 350)
@@ -93,6 +95,7 @@ class SelfAttention(nn.Module):
 
 		output, (h_n, c_n) = self.bilstm(input)
 		output = output.permute(1, 0, 2)
+		output=self.dropout(output)
 		# output.size() = (batch_size, num_seq, 2*hidden_size)
 		# h_n.size() = (1, batch_size, hidden_size)
 		# c_n.size() = (1, batch_size, hidden_size)
@@ -103,6 +106,7 @@ class SelfAttention(nn.Module):
 		# hidden_matrix.size() = (batch_size, r, 2*hidden_size)
 		# Let's now concatenate the hidden_matrix and connect it to the fully connected layer.
 		fc_out = self.fc_layer(hidden_matrix.view(-1, hidden_matrix.size()[1]*hidden_matrix.size()[2]))
+		fc_out=self.dropout(self.relu(fc_out))
 		logits = self.label(fc_out)
 		# logits.size() = (batch_size, output_size)
 
