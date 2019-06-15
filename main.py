@@ -109,6 +109,7 @@ def binary_accuracy(preds, y):
     f1=f1_score((y.data).cpu().numpy(),(rounded_preds.data).cpu().numpy(),average='binary')
     y_mini=(y.data).cpu().numpy()
     pred_mini=(rounded_preds.data).cpu().numpy()
+    print(y_mini.shape)
     acc = correct.sum() / len(correct)
     return acc,f1,y_mini,pred_mini
                   
@@ -124,11 +125,11 @@ def train(model, iterator, optimizer, criterion):
       text= batch.text[0]
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
-#       target=target.reshape([target.shape[0],1])
+      target=target.reshape([target.shape[0],1])
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
-      predictions=predictions.reshape([predictions.shape[0]])
+#       predictions=predictions.reshape([predictions.shape[0]])
       loss = criterion(predictions, target)
 
       acc,f1,y_mini,pred_mini= binary_accuracy(predictions, target)
@@ -221,10 +222,10 @@ def evaluate(model, iterator, criterion):
       for batch in iterator:
           text= batch.text[0]
           predictions = model(text)
-	  predictions=predictions.reshape([predictions.shape[0]])
+# 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
 #       target = torch.autograd.Variable(target).long()
-#           target=target.reshape([target.shape[0],1])
+          target=target.reshape([target.shape[0],1])
           loss = criterion(predictions, target)
           
           acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
@@ -232,8 +233,8 @@ def evaluate(model, iterator, criterion):
           epoch_loss += loss.item()
           epoch_acc += acc.item()
           epoch_f1+=f1
-          y_tot=np.concatenate([y_tot,y_mini])
-          pred_tot=np.concatenate([pred_tot,pred_mini])
+          y_tot=np.concatenate([y_tot,y_mini.flatten()])
+          pred_tot=np.concatenate([pred_tot,pred_mini.flatten()])
   f1=f1_score(y_tot,pred_tot,average='binary')
   f1_macro=f1_score(y_tot,pred_tot,average='macro')
   print(len(y_tot))
