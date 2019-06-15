@@ -8,7 +8,7 @@ import numpy as np
 from torchtext import data
 from torchtext import datasets
 from torchtext.vocab import Vectors, GloVe
-
+import re
 import spacy
 nlp = spacy.load('en')
 def tokenize_en(text):
