@@ -223,7 +223,7 @@ def evaluate(model, iterator, criterion):
           predictions = model(text)
           target=batch.label
 #       target = torch.autograd.Variable(target).long()
-          target=target.reshape([batch.numel(),1])
+          target=target.reshape([target.shape[0],1])
           loss = criterion(predictions, target)
 
           acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
