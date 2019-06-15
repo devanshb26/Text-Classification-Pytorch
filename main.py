@@ -15,7 +15,7 @@ from torchtext import data
 from torchtext import datasets
 import numpy as np
 import pandas as pd
-from sklearn.metrics import classification_report as cr
+from sklearn.metrics import ,f1_score,classification_report as cr
 from sklearn.metrics import confusion_matrix as cm
 
 import random
