@@ -64,9 +64,9 @@ class LSTMClassifier(nn.Module):
 		output, (final_hidden_state, final_cell_state) = self.lstm(input)
 # 	        final_hidden_state = self.dropout(self.relu(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1)))
 # 	        final_hidden_state=self.dropout(self.relu(final_hidden_state.squeeze(0)))
-                final_hidden_state=final_hidden_state[-1]
-	        final_hidden_state=self.dropout(final_hidden_state)
-		final_output = self.relu(self.fc1(final_hidden_state))
+#                 final_hidden_state=final_hidden_state[-1]
+# 	        final_hidden_state=self.dropout(final_hidden_state)
+		final_output = self.relu(self.fc1(final_hidden_state[-1]))
 		final_output=self.dropout(final_output)
 		final_output = self.relu(self.fc2(final_output))
 		final_output=self.dropout(final_output)
