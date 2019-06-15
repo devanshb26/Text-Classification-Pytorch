@@ -35,6 +35,7 @@ torch.backends.cudnn.benchmark = False
 ######################################
 from models.LSTM import LSTMClassifier
 from models.LSTM_Attn import AttentionModel
+from models.RCNN import RCNN
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data.load_dataset()
 
