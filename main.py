@@ -33,7 +33,7 @@ torch.backends.cudnn.enabled = False
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 ######################################
-from models.LSTM import LSTMClassifier
+# from models.LSTM import LSTMClassifier
 from models.LSTM_Attn import AttentionModel
 from models.RCNN import RCNN
 from models.selfAttention import SelfAttention
