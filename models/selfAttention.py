@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class SelfAttention(nn.Module):
-	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights):
+	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout):
 		super(SelfAttention, self).__init__()
 
 		"""
@@ -84,14 +84,14 @@ class SelfAttention(nn.Module):
 
 		input = self.word_embeddings(input_sentences)
 		input = input.permute(1, 0, 2)
-		if batch_size is None:
-			h_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
-			c_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
-		else:
-			h_0 = Variable(torch.zeros(2, batch_size, self.hidden_size).cuda())
-			c_0 = Variable(torch.zeros(2, batch_size, self.hidden_size).cuda())
+# 		if batch_size is None:
+# 			h_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
+# 			c_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
+# 		else:
+# 			h_0 = Variable(torch.zeros(2, batch_size, self.hidden_size).cuda())
+# 			c_0 = Variable(torch.zeros(2, batch_size, self.hidden_size).cuda())
 
-		output, (h_n, c_n) = self.bilstm(input, (h_0, c_0))
+		output, (h_n, c_n) = self.bilstm(input)
 		output = output.permute(1, 0, 2)
 		# output.size() = (batch_size, num_seq, 2*hidden_size)
 		# h_n.size() = (1, batch_size, hidden_size)
