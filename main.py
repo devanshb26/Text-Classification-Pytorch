@@ -27,9 +27,9 @@ def train_model(model, train_iter, epoch):
         text = batch.text[0]
         target = batch.label
 #         target = torch.autograd.Variable(target).long()
-#         if torch.cuda.is_available():
-#             text = text.cuda()
-#             target = target.cuda()
+        if torch.cuda.is_available():
+            text = text.cuda()
+            target = target.cuda()
         if (text.size()[0] is not 32):# One of the batch returned by BucketIterator has length different than 32.
             continue
         optim.zero_grad()
@@ -62,9 +62,9 @@ def eval_model(model, val_iter):
                 continue
             target = batch.label
 #             target = torch.autograd.Variable(target).long()
-#             if torch.cuda.is_available():
-#                 text = text.cuda()
-#                 target = target.cuda()
+            if torch.cuda.is_available():
+                text = text.cuda()
+                target = target.cuda()
             prediction = model(text)
             loss = loss_fn(prediction, target)
             num_corrects = (torch.max(prediction, 1)[1].view(target.size()).data == target.data).sum()
