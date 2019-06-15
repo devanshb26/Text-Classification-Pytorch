@@ -36,6 +36,7 @@ torch.backends.cudnn.benchmark = False
 from models.LSTM import LSTMClassifier
 from models.LSTM_Attn import AttentionModel
 from models.RCNN import RCNN
+from models.selfAttention import SelfAttention
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data.load_dataset()
 
@@ -88,7 +89,7 @@ N_LAYERS = 2
 DROPOUT = 0.2
 embedding_length = 100
 
-model = RCNN(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = SelfAttention(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
