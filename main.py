@@ -123,11 +123,11 @@ def train(model, iterator, optimizer, criterion):
       text= batch.text[0]
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
-      target=target.reshape([32,1])
+      target=target.reshape([batch.numel(),1])
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
-      print(predictions.size())
+      
       loss = criterion(predictions, target)
 
       acc,f1,y_mini,pred_mini= binary_accuracy(predictions, target)
@@ -220,10 +220,12 @@ def evaluate(model, iterator, criterion):
       for batch in iterator:
           text= batch.text[0]
           predictions = model(text)
+          target=batch.label
+#       target = torch.autograd.Variable(target).long()
+          target=target.reshape([batch.numel(),1])
+          loss = criterion(predictions, target)
 
-          loss = criterion(predictions, batch.label)
-
-          acc,f1,y_mini,pred_mini = binary_accuracy(predictions, batch.label)
+          acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
 
           epoch_loss += loss.item()
           epoch_acc += acc.item()
