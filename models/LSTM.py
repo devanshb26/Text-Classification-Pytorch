@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class LSTMClassifier(nn.Module):
-	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights):
+	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout):
 		super(LSTMClassifier, self).__init__()
 		
 		"""
@@ -26,10 +26,12 @@ class LSTMClassifier(nn.Module):
 		self.hidden_size = hidden_size
 		self.vocab_size = vocab_size
 		self.embedding_length = embedding_length
-		
+		self.dropout=nn.Dropout(dropout)
+		self.dropout_embd=nn.Dropout(0.5)
+		self.relu=nn.ReLU()
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)# Initializing the look-up table.
 		self.word_embeddings.weight = nn.Parameter(weights, requires_grad=False) # Assigning the look-up table to the pre-trained GloVe word embedding.
-		self.lstm = nn.LSTM(embedding_length, hidden_size)
+		self.lstm = nn.LSTM(embedding_length, hidden_size,n_layers=num_layers,dropout=dropout)
 		self.label = nn.Linear(hidden_size, output_size)
 		
 	def forward(self, input_sentence, batch_size=None):
@@ -50,6 +52,7 @@ class LSTMClassifier(nn.Module):
 		''' Here we will map all the indexes present in the input sequence to the corresponding word vector using our pre-trained word_embedddins.'''
 		input = self.word_embeddings(input_sentence) # embedded input of shape = (batch_size, num_sequences,  embedding_length)
 		input = input.permute(1, 0, 2) # input.size() = (num_sequences, batch_size, embedding_length)
+		input=self.dropout_embd(input)
 # 		if batch_size is None:
 # 			h_0 = Variable(torch.zeros(1, self.batch_size, self.hidden_size).cuda()) # Initial hidden state of the LSTM
 # 			c_0 = Variable(torch.zeros(1, self.batch_size, self.hidden_size).cuda()) # Initial cell state of the LSTM
@@ -57,6 +60,7 @@ class LSTMClassifier(nn.Module):
 # 			h_0 = Variable(torch.zeros(1, batch_size, self.hidden_size).cuda())
 # 			c_0 = Variable(torch.zeros(1, batch_size, self.hidden_size).cuda())
 		output, (final_hidden_state, final_cell_state) = self.lstm(input)
-		final_output = self.label(final_hidden_state[-1]) # final_hidden_state.size() = (1, batch_size, hidden_size) & final_output.size() = (batch_size, output_size)
+	        final_hidden_state=self.dropout(self.relu(final_hidden_state[-1]))
+		final_output = self.label(final_hidden_state) # final_hidden_state.size() = (1, batch_size, hidden_size) & final_output.size() = (batch_size, output_size)
 		
 		return final_output
