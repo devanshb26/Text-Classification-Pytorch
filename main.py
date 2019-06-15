@@ -123,7 +123,7 @@ def train(model, iterator, optimizer, criterion):
       text= batch.text[0]
       optimizer.zero_grad()
 #       print(batch)
-      predictions = model(text)
+      predictions = model(text).squeeze(1)
 
       loss = criterion(predictions, batch.label)
 
