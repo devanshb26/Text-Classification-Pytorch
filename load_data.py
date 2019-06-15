@@ -9,6 +9,43 @@ from torchtext import data
 from torchtext import datasets
 from torchtext.vocab import Vectors, GloVe
 
+import spacy
+nlp = spacy.load('en')
+def tokenize_en(text):
+  text = re.sub(r"[^A-Za-z0-9^,!.\/'+-=]", " ", text)
+  text = re.sub(r"what's", "what is", text)
+  text = re.sub(r"\'s", "", text)
+  text = re.sub(r"\'ve", "have", text)
+  text = re.sub(r"can't", "cannot", text)
+  text = re.sub(r"n't", "not", text)
+  text = re.sub(r"i'm", "i am", text)
+  text = re.sub(r"\'re", "are", text)
+  text = re.sub(r"\'d", "would", text)
+  text = re.sub(r"\'ll", "will", text)
+  text = re.sub(r",", "", text)
+  text = re.sub(r"\.", "", text)
+  text = re.sub(r"!", "!", text)
+  text = re.sub(r"\/", "", text)
+  text = re.sub(r"\^", "^", text)
+  text = re.sub(r"\+", "+", text)
+  text = re.sub(r"\-", "-", text)
+  text = re.sub(r"\=", "=", text)
+  text = re.sub(r"'", "", text)
+  text = re.sub(r"<", "", text)
+  text = re.sub(r">", "", text)
+  text = re.sub(r"(\d+)(k)", r"\g<1>000", text)
+  text = re.sub(r":", ":", text)
+  text = re.sub(r" e g ", "eg", text)
+  text = re.sub(r" b g ", "bg", text)
+  text = re.sub(r" u s ", "american", text)
+  text = re.sub(r"\0s", "0", text)
+  text = re.sub(r"e - mail", "email", text)
+  text = re.sub(r"j k", "jk", text)
+  tokenized=[tok.text for tok in nlp(text)]
+#   if len(tokenized) < 3:
+#         tokenized += ['<pad>'] * (3 - len(tokenized))
+  return tokenized
+
 def load_dataset(test_sen=None):
 
     """
@@ -26,11 +63,24 @@ def load_dataset(test_sen=None):
     
     """
     
-    tokenize = lambda x: x.split()
-    TEXT = data.Field(sequential=True, tokenize=tokenize, lower=True, include_lengths=True, batch_first=True, fix_length=200)
+#     tokenize = lambda x: x.split()
+    TEXT = data.Field(sequential=True, tokenize=tokenize_en, lower=True, include_lengths=True, batch_first=True, fix_length=200)
     LABEL = data.LabelField(tensor_type=torch.LongTensor)
-    train_data, test_data = datasets.IMDB.splits(TEXT, LABEL)
-    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=300))
+    fields = [(None,None),(None,None),('text', TEXT),('label', LABEL)]
+    train_data, valid_data, test_data = data.TabularDataset.splits(
+                                        path = '',
+                                        train = 'V1.4_Training.csv',
+                                        validation = 'SubtaskA_Trial_Test_Labeled - Copy.csv',
+                                        test = 'SubtaskA_EvaluationData_labeled.csv',
+#                                         train = 'train_spacy.csv',
+#                                         validation = 'valid_spacy.csv',
+#                                         test = 'test_spacy.csv',
+#                                         #sort_key=lambda x: len(x.Text),
+                                        format = 'csv',
+                                        fields = fields,
+                                        skip_header = True
+)
+    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=100),unk_init = torch.Tensor.normal_)
     LABEL.build_vocab(train_data)
 
     word_embeddings = TEXT.vocab.vectors
@@ -38,7 +88,7 @@ def load_dataset(test_sen=None):
     print ("Vector size of Text Vocabulary: ", TEXT.vocab.vectors.size())
     print ("Label Length: " + str(len(LABEL.vocab)))
 
-    train_data, valid_data = train_data.split() # Further splitting of training_data to create new training_data & validation_data
+#     train_data, valid_data = train_data.split() # Further splitting of training_data to create new training_data & validation_data
     train_iter, valid_iter, test_iter = data.BucketIterator.splits((train_data, valid_data, test_data), batch_size=32, sort_key=lambda x: len(x.text), repeat=False, shuffle=True)
 
     '''Alternatively we can also use the default configurations'''
