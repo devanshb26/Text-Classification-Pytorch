@@ -120,7 +120,7 @@ def train(model, iterator, optimizer, criterion):
   model.train()
 
   for batch in iterator:
-      text= batch.text
+      text= batch.text[0]
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
@@ -215,7 +215,7 @@ def evaluate(model, iterator, criterion):
   with torch.no_grad():
 
       for batch in iterator:
-          text= batch.text
+          text= batch.text[0]
           predictions = model(text)
 
           loss = criterion(predictions, batch.label)
