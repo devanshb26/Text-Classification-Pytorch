@@ -123,7 +123,7 @@ def train(model, iterator, optimizer, criterion):
   for batch in iterator:
       text= batch.text[0]
       target=batch.label
-      target = torch.autograd.Variable(target).long()
+#       target = torch.autograd.Variable(target).long()
       target=target.reshape([target.shape[0],1])
       optimizer.zero_grad()
 #       print(batch)
