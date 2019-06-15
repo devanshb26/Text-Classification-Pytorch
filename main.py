@@ -121,14 +121,15 @@ def train(model, iterator, optimizer, criterion):
 
   for batch in iterator:
       text= batch.text[0]
-      print(batch.label.size())
+      target=batch.label
+      target = torch.autograd.Variable(target).long()
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
       print(predictions.size())
-      loss = criterion(predictions, batch.label)
+      loss = criterion(predictions, target)
 
-      acc,f1,y_mini,pred_mini= binary_accuracy(predictions, batch.label)
+      acc,f1,y_mini,pred_mini= binary_accuracy(predictions, target)
       #print(type(f1))
       loss.backward()
 
