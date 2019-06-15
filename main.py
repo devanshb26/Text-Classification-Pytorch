@@ -26,7 +26,7 @@ def train_model(model, train_iter, epoch):
     for batch in train_iter:
         text = batch.text[0]
         target = batch.label
-#         target = torch.autograd.Variable(target).long()
+        target = torch.autograd.Variable(target).long()
         if torch.cuda.is_available():
             text = text.cuda()
             target = target.cuda()
@@ -61,7 +61,7 @@ def eval_model(model, val_iter):
             if (text.size()[0] is not 32):
                 continue
             target = batch.label
-#             target = torch.autograd.Variable(target).long()
+            target = torch.autograd.Variable(target).long()
             if torch.cuda.is_available():
                 text = text.cuda()
                 target = target.cuda()
