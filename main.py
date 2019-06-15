@@ -43,7 +43,7 @@ def train_model(model, train_iter, epoch):
         steps += 1
         
         if steps % 100 == 0:
-            print (f'Epoch: {epoch+1}, Idx: {idx+1}, Training Loss: {loss.item():.4f}, Training Accuracy: {acc.item(): .2f}%')
+            print (f'Epoch: {epoch+1}, Training Loss: {loss.item():.4f}, Training Accuracy: {acc.item(): .2f}%')
         
         total_epoch_loss += loss.item()
         total_epoch_acc += acc.item()
