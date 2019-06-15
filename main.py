@@ -109,7 +109,7 @@ def binary_accuracy(preds, y):
     f1=f1_score((y.data).cpu().numpy(),(rounded_preds.data).cpu().numpy(),average='binary')
     y_mini=(y.data).cpu().numpy()
     pred_mini=(rounded_preds.data).cpu().numpy()
-    print(y_mini.shape)
+#     print(y_mini.shape)
     acc = correct.sum() / len(correct)
     return acc,f1,y_mini,pred_mini
                   
@@ -280,7 +280,7 @@ for epoch in range(N_EPOCHS):
 
 
 
-  model.load_state_dict(torch.load('tut4-model.pt'))
+model.load_state_dict(torch.load('tut4-model.pt'))
 
 test_loss, test_acc,test_f1,f1,f1_macro = evaluate(model, test_iter, criterion)
 
