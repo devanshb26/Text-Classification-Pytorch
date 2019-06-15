@@ -23,7 +23,7 @@ def train_model(model, train_iter, epoch):
     steps = 0
     model.train()
 #     for idx, batch in enumerate(train_iter):
-    for batch in iterator:
+    for batch in train_iter:
         text = batch.text[0]
         target = batch.label
 #         target = torch.autograd.Variable(target).long()
@@ -56,7 +56,7 @@ def eval_model(model, val_iter):
     model.eval()
     with torch.no_grad():
 #         for idx, batch in enumerate(val_iter):
-          for batch in iterator:
+          for batch in val_iter:
             text = batch.text[0]
             if (text.size()[0] is not 32):
                 continue
