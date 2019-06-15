@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class SelfAttention(nn.Module):
-	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout_2):
+	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout):
 		super(SelfAttention, self).__init__()
 
 		"""
@@ -33,7 +33,7 @@ class SelfAttention(nn.Module):
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
 		self.dropout = nn.Dropout(dropout)
-		self.dropout_2=nn.Dropout(dropout_2)
+		self.dropout_embd = nn.Dropout(0.5)
 		self.relu=nn.ReLU()
 		self.bilstm = nn.LSTM(embedding_length, hidden_size, dropout=self.dropout, bidirectional=True)
 		# We will use da = 350, r = 30 & penalization_coeff = 1 as per given in the self-attention original ICLR paper
@@ -86,6 +86,7 @@ class SelfAttention(nn.Module):
 
 		input = self.word_embeddings(input_sentences)
 		input = input.permute(1, 0, 2)
+		input=self.dropout_embd(input)
 # 		if batch_size is None:
 # 			h_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
 # 			c_0 = Variable(torch.zeros(2, self.batch_size, self.hidden_size).cuda())
@@ -95,7 +96,7 @@ class SelfAttention(nn.Module):
 
 		output, (h_n, c_n) = self.bilstm(input)
 		output = output.permute(1, 0, 2)
-		output=self.dropout(output)
+		
 		# output.size() = (batch_size, num_seq, 2*hidden_size)
 		# h_n.size() = (1, batch_size, hidden_size)
 		# c_n.size() = (1, batch_size, hidden_size)
