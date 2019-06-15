@@ -80,7 +80,7 @@ TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data
 
 # learning_rate = 2e-5
 batch_size = 32
-output_size = 1
+output_size = 2
 hidden_size = 256
 embedding_length = 100
 
@@ -90,8 +90,8 @@ model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embeddi
 import torch.optim as optim
 
 optimizer = optim.Adam(model.parameters())
-criterion = nn.BCEWithLogitsLoss()
-
+# criterion = nn.BCEWithLogitsLoss()
+criterion=F.cross_entropy
 model = model.to(device)
 criterion = criterion.to(device)
 
@@ -102,8 +102,9 @@ def binary_accuracy(preds, y):
     """
     
     #round predictions to the closest integer
-    rounded_preds = torch.round(torch.sigmoid(preds))
-    correct = (rounded_preds == y).float() #convert into float for division
+    
+    rounded_preds = (torch.max(preds, 1)[1].view(target.size())
+    correct = (rounded_preds.data == y.data).float() #convert into float for division
     #print(len((y.data).cpu().numpy()))
     f1=f1_score((y.data).cpu().numpy(),(rounded_preds.data).cpu().numpy(),average='binary')
     y_mini=(y.data).cpu().numpy()
@@ -122,8 +123,8 @@ def train(model, iterator, optimizer, criterion):
   for batch in iterator:
       text= batch.text[0]
       target=batch.label
-#       target = torch.autograd.Variable(target).long()
-      target=target.reshape([batch.numel(),1])
+      target = torch.autograd.Variable(target).long()
+      
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
