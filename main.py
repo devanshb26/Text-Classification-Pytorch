@@ -268,8 +268,8 @@ for epoch in range(N_EPOCHS):
 
   epoch_mins, epoch_secs = epoch_time(start_time, end_time)
 
-  if f1 > best_valid_f1:
-      best_valid_f1 = f1
+  if valid_f1 > best_valid_f1:
+      best_valid_f1 = valid_f1
       c=0
       torch.save(model.state_dict(), 'tut4-model.pt')
   else:
@@ -280,7 +280,7 @@ for epoch in range(N_EPOCHS):
   print(f'Epoch: {epoch+1:02} | Epoch Time: {epoch_mins}m {epoch_secs}s')
   print(f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}% | Train_f1 : {train_f1:.4f}')
   print(f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}% | Valid_f1 : {f1:.4f}')
-  print(f'\t test. Loss: {test_loss:.3f} |  test. Acc: {test_acc*100:.2f}% | test_f1 : {f1_test:.4f}')
+  print(f'\t test. Loss: {test_loss:.3f} |  test. Acc: {test_acc*100:.2f}% | test_f1 : {test_f1:.4f}| test_f1_bin : {f1_test:.4f}')
 
 
 
