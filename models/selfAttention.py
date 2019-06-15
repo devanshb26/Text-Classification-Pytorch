@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class SelfAttention(nn.Module):
-	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout):
+	def __init__(self, batch_size, output_size, hidden_size, vocab_size, embedding_length, weights,n_layers,dropout_2):
 		super(SelfAttention, self).__init__()
 
 		"""
