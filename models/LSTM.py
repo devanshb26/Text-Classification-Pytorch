@@ -31,8 +31,8 @@ class LSTMClassifier(nn.Module):
 		self.relu=nn.ReLU()
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)# Initializing the look-up table.
 		self.word_embeddings.weight = nn.Parameter(weights, requires_grad=False) # Assigning the look-up table to the pre-trained GloVe word embedding.
-		self.lstm = nn.LSTM(embedding_length, hidden_size,n_layers=num_layers,bidirectional=True,dropout=dropout)
-		self.fc1 = nn.Linear(hidden_size*2, 150)
+		self.lstm = nn.LSTM(embedding_length, hidden_size,n_layers=num_layers,dropout=dropout)
+		self.fc1 = nn.Linear(hidden_size, 150)
 		self.fc2 = nn.Linear(150, 25)
 		self.label = nn.Linear(25, output_size)
 		
@@ -62,9 +62,11 @@ class LSTMClassifier(nn.Module):
 # 			h_0 = Variable(torch.zeros(1, batch_size, self.hidden_size).cuda())
 # 			c_0 = Variable(torch.zeros(1, batch_size, self.hidden_size).cuda())
 		output, (final_hidden_state, final_cell_state) = self.lstm(input)
-	        final_hidden_state = self.dropout(self.relu(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1)))
+# 	        final_hidden_state = self.dropout(self.relu(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1)))
 # 	        final_hidden_state=self.dropout(self.relu(final_hidden_state.squeeze(0)))
-		final_output = self.relu(self.fc1(final_hidden_state.squeeze(0)))
+                final_hidden_state=final_hidden_state[-1]
+	        final_hidden_state=self.dropout(final_hidden_state)
+		final_output = self.relu(self.fc1(final_hidden_state))
 		final_output=self.dropout(final_output)
 		final_output = self.relu(self.fc2(final_output))
 		final_output=self.dropout(final_output)
