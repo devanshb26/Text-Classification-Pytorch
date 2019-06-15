@@ -65,7 +65,7 @@ def load_dataset(test_sen=None):
     """
     
 #     tokenize = lambda x: x.split()
-    TEXT = data.Field(sequential=True, tokenize=tokenize_en, lower=True, include_lengths=True, batch_first=True, fix_length=200)
+    TEXT = data.Field(sequential=True, tokenize='spacy', lower=True, include_lengths=True, batch_first=True, fix_length=200)
     LABEL = data.LabelField(dtype=torch.float)
     fields = [(None,None),(None,None),('text', TEXT),('label', LABEL)]
     train_data, valid_data, test_data = data.TabularDataset.splits(
