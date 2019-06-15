@@ -15,7 +15,7 @@ from torchtext import data
 from torchtext import datasets
 import numpy as np
 import pandas as pd
-from sklearn.metrics import f1_score,classification_report as cr
+from sklearn.metrics import precision_score,f1_score,classification_report as cr
 from sklearn.metrics import confusion_matrix as cm
 
 import random
@@ -240,10 +240,11 @@ def evaluate(model, iterator, criterion):
           pred_tot=np.concatenate([pred_tot,pred_mini.flatten()])
   f1=f1_score(y_tot,pred_tot,average='binary')
   f1_macro=f1_score(y_tot,pred_tot,average='macro')
+  precision=precision_score(y_tot,pred_tot,average='binary')	
   print(len(y_tot))
   print(cr(y_tot,pred_tot))
   print(cm(y_tot,pred_tot))
-  return epoch_loss / len(iterator), epoch_acc / len(iterator),epoch_f1/len(iterator),f1,f1_macro
+  return epoch_loss / len(iterator), epoch_acc / len(iterator),epoch_f1/len(iterator),f1,f1_macro,precision
   
 import time
 
@@ -262,14 +263,14 @@ for epoch in range(N_EPOCHS):
   start_time = time.time()
 
   train_loss, train_acc,train_f1 = train(model, train_iter, optimizer, criterion)
-  valid_loss, valid_acc,valid_f1,f1,f1_macro = evaluate(model, valid_iter, criterion)
-  test_loss, test_acc,test_f1,f1_test,f1_macro_test = evaluate(model, test_iter, criterion)
+  valid_loss, valid_acc,valid_f1,f1,f1_macro,valid_precision = evaluate(model, valid_iter, criterion)
+  test_loss, test_acc,test_f1,f1_test,f1_macro_test,test_precision = evaluate(model, test_iter, criterion)
   end_time = time.time()
 
   epoch_mins, epoch_secs = epoch_time(start_time, end_time)
 
-  if f1 > best_valid_f1:
-      best_valid_f1 = f1
+  if valid_precision > best_valid_f1:
+      best_valid_f1 = valid_precision
       c=0
       torch.save(model.state_dict(), 'tut4-model.pt')
   else:
@@ -286,7 +287,7 @@ for epoch in range(N_EPOCHS):
 
 model.load_state_dict(torch.load('tut4-model.pt'))
 
-test_loss, test_acc,test_f1,f1,f1_macro = evaluate(model, test_iter, criterion)
+test_loss, test_acc,test_f1,f1,f1_macro,precision = evaluate(model, test_iter, criterion)
 
 print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1 : {test_f1:.4f}')
 print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_bin : {f1:.4f}')
