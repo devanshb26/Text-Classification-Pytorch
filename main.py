@@ -89,7 +89,7 @@ N_LAYERS = 2
 DROPOUT = 0.2
 embedding_length = 100
 
-model = SelfAttention(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
