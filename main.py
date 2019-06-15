@@ -121,10 +121,11 @@ def train(model, iterator, optimizer, criterion):
 
   for batch in iterator:
       text= batch.text[0]
+      print(batch.label.size())
       optimizer.zero_grad()
 #       print(batch)
-      predictions = model(text).squeeze(1)
-
+      predictions = model(text)
+      print(predictions.size())
       loss = criterion(predictions, batch.label)
 
       acc,f1,y_mini,pred_mini= binary_accuracy(predictions, batch.label)
