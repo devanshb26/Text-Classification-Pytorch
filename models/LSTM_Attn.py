@@ -33,7 +33,7 @@ class AttentionModel(torch.nn.Module):
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
 		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
-		self.label = nn.Linear(hidden_size, output_size)
+		self.label = nn.Linear(hidden_size*2, output_size)
 		#self.attn_fc_layer = nn.Linear()
 		self.dropout = nn.Dropout(dropout)
 		self.relu=nn.ReLU()
