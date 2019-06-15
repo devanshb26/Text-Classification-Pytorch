@@ -33,9 +33,12 @@ class AttentionModel(torch.nn.Module):
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
 		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
-		self.label = nn.Linear(hidden_size*2, output_size)
+		self.fc1 = nn.Linear(hidden_size*2, 150)
+		self.fc2 = nn.Linear(150, 25)
+		self.label = nn.Linear(25, output_size)
 		#self.attn_fc_layer = nn.Linear()
 		self.dropout = nn.Dropout(dropout)
+		self.dropout_embd = nn.Dropout(0.5)
 		self.relu=nn.ReLU()
 		
 	def attention_net(self, lstm_output, final_state):
@@ -87,7 +90,7 @@ class AttentionModel(torch.nn.Module):
 		
 		input = self.word_embeddings(input_sentences)
 		input = input.permute(1, 0, 2)
-		input=self.dropout(input)
+		input=self.dropout_embd(input)
 # 		if batch_size is None:
 # 			h_0 = Variable(torch.zeros(1, self.batch_size, self.hidden_size).cuda())
 # 			c_0 = Variable(torch.zeros(1, self.batch_size, self.hidden_size).cuda())
@@ -99,6 +102,9 @@ class AttentionModel(torch.nn.Module):
 		output = output.permute(1, 0, 2) # output.size() = (batch_size, num_seq, hidden_size)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
 		attn_output = self.dropout(self.relu(self.attention_net(output, final_hidden_state)))
-		logits = self.label(attn_output)
-		
+		logits = self.relu(self.fc1(attn_output))
+		logits=self.dropout(logits)
+		logits = self.relu(self.fc2(logits))
+		logits=self.dropout(logits)
+		logits=self.label(logits)
 		return logits
