@@ -304,3 +304,26 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1 : {t
 print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_bin : {f1:.4f}')
 print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac : {f1_macro:.4f}')   
 ###############################################
+
+
+def predict_sentiment(model):
+    model.eval()
+    l=[]
+    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
+    for i in range(len(df)):
+      tokenized = nlp(df['data'][i])
+      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+      length = [len(indexed)]
+      tensor = torch.LongTensor(indexed).to(device)
+      tensor = tensor.unsqueeze(1)
+      length_tensor = torch.LongTensor(length)
+      prediction = torch.sigmoid(model(tensor))
+      l.append(prediction.item())
+    df['preds']=l
+    import csv
+    df.to_csv('predidctions.csv')
+    return(l)
+    
+    
+a=predict_sentiment(model)
+
