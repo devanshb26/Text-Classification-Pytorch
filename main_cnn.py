@@ -84,6 +84,7 @@ TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data
 
 # learning_rate = 2e-5
 batch_size = 64
+INPUT_DIM = len(TEXT.vocab)
 EMBEDDING_DIM = 100
 N_FILTERS = 192
 HIDDEN_DIM=250
@@ -91,8 +92,8 @@ Dropout_2=0.2
 FILTER_SIZES = [2,3,4]
 OUTPUT_DIM = 1
 DROPOUT = 0.5
-PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
-model = CNN1d(INPUT_DIM, EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT, PAD_IDX,Dropout_2)
+# PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
+model = CNN1d(vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,Dropout_2)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
