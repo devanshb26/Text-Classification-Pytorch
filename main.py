@@ -18,6 +18,9 @@ import pandas as pd
 from sklearn.metrics import precision_score,f1_score,classification_report as cr
 from sklearn.metrics import confusion_matrix as cm
 
+import spacy
+nlp = spacy.load('en')
+
 import random
 import re
 from torch.backends import cudnn
