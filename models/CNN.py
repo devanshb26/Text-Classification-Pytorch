@@ -43,8 +43,8 @@ class CNN(nn.Module):
 		self.dropout_embd = nn.Dropout(0.5)
 		self.fc1 = nn.Linear(len(kernel_heights)*out_channels, 364)
 		self.fc2 = nn.Linear(364,162)
-		self.fc3 = nn.Linear(162,50)
-		self.label = nn.Linear(50,output_size)
+# 		self.fc3 = nn.Linear(162,50)
+		self.label = nn.Linear(162,output_size)
 	def conv_block(self, input, conv_layer):
 		conv_out = conv_layer(input)# conv_out.size() = (batch_size, out_channels, dim, 1)
 		activation = F.relu(conv_out.squeeze(3))# activation.size() = (batch_size, out_channels, dim1)
@@ -89,8 +89,8 @@ class CNN(nn.Module):
 		logits=self.dropout(logits)
 		logits = F.relu(self.fc2(logits))
 		logits=self.dropout(logits)
-		logits = F.relu(self.fc3(logits))
-		logits=self.dropout(logits)
+# 		logits = F.relu(self.fc3(logits))
+# 		logits=self.dropout(logits)
 		
 		# fc_in.size()) = (batch_size, num_kernels*out_channels)
 		logits = self.label(logits)
