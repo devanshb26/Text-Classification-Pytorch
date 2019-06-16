@@ -26,7 +26,7 @@ import random
 
 import re
 from torch.backends import cudnn
-SEED = 0
+SEED = 1234
 print(SEED)
 random.seed(SEED)
 np.random.seed(SEED)
