@@ -4,7 +4,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class CNN1d(nn.Module):
-    def __init__(self,vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,Dropout_2,weights):
+    def __init__(self,vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,DROPOUT_2,weights):
         
         super().__init__()
         
