@@ -27,8 +27,8 @@ class CNN1d(nn.Module):
         self.fc4 = nn.Linear(50,OUTPUT_DIM)
         nn.init.kaiming_normal_(self.fc4.weight)
         
-        self.dropout = nn.Dropout(dropout)
-        self.dropout_2=nn.Dropout(dropout_2)
+        self.dropout = nn.Dropout(DROPOUT)
+        self.dropout_2=nn.Dropout(DROPOUT_2)
     def forward(self, text):
         
         #text = [sent len, batch size]
