@@ -94,7 +94,7 @@ out_channels=192
 kernel_heights=[2,3,4]
 stride=1
 padding=0
-keep_probab=0.2
+keep_probab=0.75
 
 
 # model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
