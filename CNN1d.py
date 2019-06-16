@@ -8,7 +8,7 @@ class CNN1d(nn.Module):
         
         super().__init__()
         
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.embeddings = nn.Embedding(vocab_size, embedding_dim)
         self.embeddings.weight = nn.Parameter(weights, requires_grad=False)
         self.relu = nn.ReLU()
         self.convs = nn.ModuleList([
@@ -37,7 +37,7 @@ class CNN1d(nn.Module):
         
         #text = [batch size, sent len]
         
-        embedded = self.embedding(text)
+        embedded = self.embeddings(text)
                 
         #embedded = [batch size, sent len, emb dim]
         
