@@ -14,7 +14,7 @@ class CNN1d(nn.Module):
         self.convs = nn.ModuleList([
                                     nn.Conv2d(in_channels = 1, 
                                               out_channels = N_FILTERS, 
-                                              kernel_size = (fs,EMBEDDING_DIM)
+                                              kernel_size = (fs,EMBEDDING_DIM))
                                     for fs in FILTER_SIZES
                                     ])
         
