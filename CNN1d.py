@@ -12,9 +12,9 @@ class CNN1d(nn.Module):
         self.embeddings.weight = nn.Parameter(weights, requires_grad=False)
         self.relu = nn.ReLU()
         self.convs = nn.ModuleList([
-                                    nn.Conv1d(in_channels = EMBEDDING_DIM, 
+                                    nn.Conv2d(in_channels = 1, 
                                               out_channels = N_FILTERS, 
-                                              kernel_size = fs)
+                                              kernel_size = (fs,EMBEDDING_DIM)
                                     for fs in FILTER_SIZES
                                     ])
         
@@ -41,12 +41,13 @@ class CNN1d(nn.Module):
                 
         #embedded = [batch size, sent len, emb dim]
         
-        embedded = embedded.permute(0, 2, 1)
+#         embedded = embedded.permute(0, 2, 1)
+        embedded = embedded.unsqueeze(1)
         embedded=self.dropout(embedded)
         #embedded = [batch size, emb dim, sent len]
         
-        conved = [F.relu(conv(embedded)) for conv in self.convs]
-            
+#         conved = [F.relu(conv(embedded)) for conv in self.convs]
+        conved = [F.relu(conv(embedded)).squeeze(3) for conv in self.convs]  
         #conved_n = [batch size, n_filters, sent len - filter_sizes[n] + 1]
         
         pooled = [F.max_pool1d(conv, conv.shape[2]).squeeze(2) for conv in conved]
