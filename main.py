@@ -8,6 +8,7 @@ import load_data
 # import numpy as np
 #############################    
 import torch
+import sys
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
@@ -20,12 +21,14 @@ from sklearn.metrics import confusion_matrix as cm
 
 import spacy
 nlp = spacy.load('en')
-
 import random
+SEED_=sys.argv[4]
+random.seed(SEED_)
+
 import re
 from torch.backends import cudnn
 SEED = random.randint(0, 10000)
-random.seed(SEED)
+
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 # seed = 0
