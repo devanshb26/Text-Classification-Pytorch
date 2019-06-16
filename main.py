@@ -24,7 +24,7 @@ nlp = spacy.load('en')
 import random
 import re
 from torch.backends import cudnn
-SEED = 42
+SEED = 1234
 random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
