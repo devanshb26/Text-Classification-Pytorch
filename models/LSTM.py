@@ -32,9 +32,18 @@ class LSTMClassifier(nn.Module):
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)# Initializing the look-up table.
 		self.word_embeddings.weight = nn.Parameter(weights, requires_grad=False) # Assigning the look-up table to the pre-trained GloVe word embedding.
 		self.lstm = nn.LSTM(embedding_length, hidden_size,dropout=dropout)
+		for name, param in self.rnn.named_parameters():
+		    if 'bias' in name:
+                        nn.init.constant_(param, 0.0)
+                    elif 'weight' in name:
+           
+                        nn.init.kaiming_normal_(param)
 		self.fc1 = nn.Linear(hidden_size, 150)
+		nn.init.kaiming_normal_(self.fc1.weight)
 		self.fc2 = nn.Linear(150, 25)
+		nn.init.kaiming_normal_(self.fc2.weight)
 		self.label = nn.Linear(25, output_size)
+		nn.init.kaiming_normal_(self.label.weight)
  		
 		
 	def forward(self, input_sentence, batch_size=None):
