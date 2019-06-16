@@ -314,13 +314,14 @@ def predict_sentiment(model):
     l=[]
     df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
     for i in range(len(df)):
-      tokenized = nlp(df['data'][i])
+      tokenized = [tok.text for tok in nlp(df['data'][i])]
       indexed = [TEXT.vocab.stoi[t] for t in tokenized]
       length = [len(indexed)]
       tensor = torch.LongTensor(indexed).to(device)
       tensor = tensor.unsqueeze(1)
       length_tensor = torch.LongTensor(length)
       prediction = torch.sigmoid(model(tensor))
+      print(prediction.item())
       l.append(prediction.item())
     df['preds']=l
     import csv
