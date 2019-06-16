@@ -134,7 +134,7 @@ def train(model, iterator, optimizer, criterion):
       text= batch.text[0]
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
-      
+      target = target.reshape([target.shape[0],1])
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
@@ -234,7 +234,7 @@ def evaluate(model, iterator, criterion):
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
 #       target = torch.autograd.Variable(target).long()
-          
+          target = target.reshape([target.shape[0],1])
           loss = criterion(predictions, target)
           
           acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
@@ -242,8 +242,8 @@ def evaluate(model, iterator, criterion):
           epoch_loss += loss.item()
           epoch_acc += acc.item()
           epoch_f1+=f1
-          y_tot=np.concatenate([y_tot,y_mini])
-          pred_tot=np.concatenate([pred_tot,pred_mini])
+          y_tot=np.concatenate([y_tot,y_mini.flatten()])
+          pred_tot=np.concatenate([pred_tot,pred_mini.flatten()])
   f1=f1_score(y_tot,pred_tot,average='binary')
   f1_macro=f1_score(y_tot,pred_tot,average='macro')
   precision=precision_score(y_tot,pred_tot,average='binary')	
