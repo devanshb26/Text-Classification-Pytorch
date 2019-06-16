@@ -40,8 +40,11 @@ class CNN(nn.Module):
 		self.conv2 = nn.Conv2d(in_channels, out_channels, (kernel_heights[1], embedding_length), stride, padding)
 		self.conv3 = nn.Conv2d(in_channels, out_channels, (kernel_heights[2], embedding_length), stride, padding)
 		self.dropout = nn.Dropout(keep_probab)
-		self.label = nn.Linear(len(kernel_heights)*out_channels, output_size)
-	
+		self.dropout_embd = nn.Dropout(0.5)
+		self.fc1 = nn.Linear(len(kernel_heights)*out_channels, 364)
+		self.fc2 = nn.Linear(364,162)
+		self.fc3= nn.Linear(162,50)
+	        self.label = nn.Linear(50,output_size)
 	def conv_block(self, input, conv_layer):
 		conv_out = conv_layer(input)# conv_out.size() = (batch_size, out_channels, dim, 1)
 		activation = F.relu(conv_out.squeeze(3))# activation.size() = (batch_size, out_channels, dim1)
@@ -73,6 +76,7 @@ class CNN(nn.Module):
 		input = self.word_embeddings(input_sentences)
 		# input.size() = (batch_size, num_seq, embedding_length)
 		input = input.unsqueeze(1)
+		input=self.dropout_embd(input)
 		# input.size() = (batch_size, 1, num_seq, embedding_length)
 		max_out1 = self.conv_block(input, self.conv1)
 		max_out2 = self.conv_block(input, self.conv2)
@@ -81,7 +85,14 @@ class CNN(nn.Module):
 		all_out = torch.cat((max_out1, max_out2, max_out3), 1)
 		# all_out.size() = (batch_size, num_kernels*out_channels)
 		fc_in = self.dropout(all_out)
+		logits = F.relu(self.fc1(fc_in))
+		logits=self.dropout(logits)
+		logits = F.relu(self.fc2(logits))
+		logits=self.dropout(logits)
+		logits = F.relu(self.fc3(logits))
+		logits=self.dropout(logits)
+		
 		# fc_in.size()) = (batch_size, num_kernels*out_channels)
-		logits = self.label(fc_in)
+		logits = self.label(logits)
 		
 		return logits
