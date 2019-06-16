@@ -5,11 +5,11 @@ from torch.nn import functional as F
 
 class CNN1d(nn.Module):
     def __init__(self, vocab_size, embedding_dim, n_filters, filter_sizes, output_dim, 
-                 dropout, pad_idx,dropout_2):
+                 dropout,dropout_2):
         
         super().__init__()
         
-        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx = pad_idx)
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
         self.relu = nn.ReLU()
         self.convs = nn.ModuleList([
                                     nn.Conv1d(in_channels = embedding_dim, 
