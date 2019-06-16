@@ -4,18 +4,18 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class CNN1d(nn.Module):
-    def __init__(self, vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,embedding_dim, n_filters,fs, OUTPUT_DIM,DROPOUT,Dropout_2,weights):
+    def __init__(self,vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,Dropout_2,weights):
         
         super().__init__()
         
-        self.embeddings = nn.Embedding(vocab_size, embedding_dim)
+        self.embeddings = nn.Embedding(vocab_size, EMBEDDING_DIM)
         self.embeddings.weight = nn.Parameter(weights, requires_grad=False)
         self.relu = nn.ReLU()
         self.convs = nn.ModuleList([
-                                    nn.Conv1d(in_channels = embedding_dim, 
-                                              out_channels = n_filters, 
+                                    nn.Conv1d(in_channels = EMBEDDING_DIM, 
+                                              out_channels = N_FILTERS, 
                                               kernel_size = fs)
-                                    for fs in filter_sizes
+                                    for fs in FILTER_SIZES
                                     ])
         
         self.fc1 = nn.Linear(len(filter_sizes) * n_filters, 364)
