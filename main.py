@@ -22,8 +22,8 @@ from sklearn.metrics import confusion_matrix as cm
 import spacy
 nlp = spacy.load('en')
 import random
-SEED_=sys.argv[4]
-random.seed(SEED_)
+Seed = sys.argv[1]
+random.seed(Seed)
 
 import re
 from torch.backends import cudnn
