@@ -320,7 +320,7 @@ def predict_sentiment(model):
       tensor = torch.LongTensor(indexed).to(device)
       tensor = tensor.unsqueeze(1)
       length_tensor = torch.LongTensor(length)
-      prediction = torch.sigmoid(model(tensor))
+      prediction = torch.sigmoid(model(tensor,1))
       print(prediction)
       l.append(prediction)
     df['preds']=l
