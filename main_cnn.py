@@ -93,7 +93,7 @@ FILTER_SIZES = [2,3,4]
 OUTPUT_DIM = 1
 DROPOUT = 0.5
 # PAD_IDX = TEXT.vocab.stoi[TEXT.pad_token]
-model = CNN1d(vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,Dropout_2)
+model = CNN1d(vocab_size,word_embeddings,INPUT_DIM,HIDDEN_DIM,EMBEDDING_DIM, N_FILTERS, FILTER_SIZES, OUTPUT_DIM,DROPOUT,Dropout_2,word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
@@ -134,7 +134,7 @@ def train(model, iterator, optimizer, criterion):
       text= batch.text[0]
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
-      target=target.reshape([target.shape[0],1])
+      
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
@@ -234,7 +234,7 @@ def evaluate(model, iterator, criterion):
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
 #       target = torch.autograd.Variable(target).long()
-          target=target.reshape([target.shape[0],1])
+          
           loss = criterion(predictions, target)
           
           acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
@@ -242,8 +242,8 @@ def evaluate(model, iterator, criterion):
           epoch_loss += loss.item()
           epoch_acc += acc.item()
           epoch_f1+=f1
-          y_tot=np.concatenate([y_tot,y_mini.flatten()])
-          pred_tot=np.concatenate([pred_tot,pred_mini.flatten()])
+          y_tot=np.concatenate([y_tot,y_mini])
+          pred_tot=np.concatenate([pred_tot,pred_mini])
   f1=f1_score(y_tot,pred_tot,average='binary')
   f1_macro=f1_score(y_tot,pred_tot,average='macro')
   precision=precision_score(y_tot,pred_tot,average='binary')	
