@@ -143,7 +143,7 @@ def load_dataset(test_sen=None):
                                         skip_header = True
 ) 
     print(vars(train_data[0]))
-    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=100))
+    TEXT.build_vocab(train_data, vectors=GloVe(name='6B', dim=300))
     LABEL.build_vocab(train_data)
 
     word_embeddings = TEXT.vocab.vectors
