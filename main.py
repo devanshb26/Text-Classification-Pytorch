@@ -355,6 +355,7 @@ def evaluate(model, iterator, criterion):
 
       for batch in iterator:
           text= batch.text[0]
+	  print(text.size())
           predictions = model(text)
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
@@ -432,8 +433,8 @@ def predict_sentiment(model):
     l=[]
     df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
     for i in range(len(df)):
-      tokenized = TEXT.preprocess(df['data'][i])
-      indexed = [[TEXT.vocab.stoi[t] for t in tokenized]]
+      tokenized = nlp(df['data'][i])
+      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
       test_sen = np.asarray(indexed)
       test_sen = torch.LongTensor(test_sen)
       test_tensor = Variable(test_sen, volatile=True)
