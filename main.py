@@ -26,9 +26,9 @@ import random
 
 import re
 from torch.backends import cudnn
-SEED = 1234
+seed = 1234
 
-seed=random.randint(0, 10000)
+# seed=random.randint(0, 10000)
 print(seed)
 random.seed(seed)
 np.random.seed(seed)
@@ -106,8 +106,8 @@ padding=0
 keep_probab=0.4
 
 
-# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
