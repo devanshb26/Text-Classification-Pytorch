@@ -97,7 +97,7 @@ hidden_size = 256
 N_LAYERS = 2
 #changed from 0.2 to 0.4
 DROPOUT = 0.4
-embedding_length = 300
+embedding_length = 100
 in_channels=1
 out_channels=192
 kernel_heights=[2,3,4,5]
