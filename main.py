@@ -355,6 +355,7 @@ def evaluate(model, iterator, criterion):
       for batch in iterator:
           text= batch.text[0]
           predictions = model(text)
+	  print(predictions.size())
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
 #       target = torch.autograd.Variable(target).long()
