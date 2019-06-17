@@ -262,7 +262,7 @@ def train(model, iterator, optimizer, criterion):
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
-      print(predictions.size())
+#       print(predictions.size())
 #       predictions=predictions.reshape([predictions.shape[0]])
       loss = criterion(predictions, target)
 
@@ -437,7 +437,7 @@ def predict_sentiment(model):
       length = [len(indexed)]
       tensor = torch.LongTensor(indexed).to(device)
       print(tensor.size())
-      tensor = tensor.unsqueeze(2)
+      tensor = tensor.unsqueeze(0)
       print(tensor.size())
       length_tensor = torch.LongTensor(length)
 #       test_tensor = Variable(tensor, volatile=True)
