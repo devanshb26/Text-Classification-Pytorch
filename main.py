@@ -386,7 +386,7 @@ def epoch_time(start_time, end_time):
     
     
 N_EPOCHS = 1
-best_valid_f1 = float(0)
+best_valid_f1 = float(-1)
 c=0
 for epoch in range(N_EPOCHS):
 
