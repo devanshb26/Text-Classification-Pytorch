@@ -435,8 +435,9 @@ def predict_sentiment(model):
     df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
     for i in range(len(df)):
       tokenized = TEXT.preprocess(df['data'][i])
-      print(tokenized.size())
+      
       indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+      print(len(tokenized))
       test_sen = np.asarray(indexed)
       test_sen=np.asarray(test_sen)
       test_sen = torch.LongTensor(test_sen)
