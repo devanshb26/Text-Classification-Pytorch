@@ -262,6 +262,7 @@ def train(model, iterator, optimizer, criterion):
       optimizer.zero_grad()
 #       print(batch)
       predictions = model(text)
+      print(predictions.size())
 #       predictions=predictions.reshape([predictions.shape[0]])
       loss = criterion(predictions, target)
 
@@ -357,7 +358,6 @@ def evaluate(model, iterator, criterion):
           predictions = model(text)
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
-	  print(predictions.size())
 	  
 #         target = torch.autograd.Variable(target).long()
           target=target.reshape([target.shape[0],1])
