@@ -96,14 +96,14 @@ output_size = 1
 hidden_size = 256
 N_LAYERS = 2
 #changed from 0.2 to 0.4
-DROPOUT = 0.2
+DROPOUT = 0.4
 embedding_length = 300
 in_channels=1
 out_channels=192
 kernel_heights=[2,3,4,5]
 stride=1
 padding=0
-keep_probab=0.2
+keep_probab=0.4
 
 
 # model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
