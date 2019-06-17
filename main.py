@@ -438,7 +438,8 @@ def predict_sentiment(model):
       length_tensor = torch.LongTensor(length)
       
       prediction = torch.sigmoid(model(tensor))
-      print(prediction + ' ' + df['labels'][i])
+      print(prediction[0][0])
+      print(df['labels'][i])
       
       l.append((prediction[0][0].data).cpu().numpy())
     df['preds']=l
