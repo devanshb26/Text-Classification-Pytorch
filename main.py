@@ -97,7 +97,7 @@ hidden_size = 256
 N_LAYERS = 2
 #changed from 0.2 to 0.4
 DROPOUT = 0.2
-embedding_length = 300
+embedding_length = 100
 in_channels=1
 out_channels=192
 kernel_heights=[2,3,4,5]
@@ -275,7 +275,7 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
     
     
-N_EPOCHS = 30
+N_EPOCHS = 20
 best_valid_f1 = float(0)
 c=0
 for epoch in range(N_EPOCHS):
