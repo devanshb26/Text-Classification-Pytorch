@@ -256,7 +256,7 @@ def train(model, iterator, optimizer, criterion):
 
   for batch in iterator:
       text= batch.text[0]
-      print(text.size())
+      
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
       target=target.reshape([target.shape[0],1])
@@ -434,27 +434,28 @@ def predict_sentiment(model):
     l=[]
     df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
     for i in range(len(df)):
-      tokenized = nlp(df['data'][i])
+      tokenized = TEXT.preprocess(df['data'][i])
       indexed = [TEXT.vocab.stoi[t] for t in tokenized]
       test_sen = np.asarray(indexed)
+      test_sen=np.asarray(test_sen)
       test_sen = torch.LongTensor(test_sen)
       test_tensor = Variable(test_sen, volatile=True)
       test_tensor = test_tensor.cuda()
-      length = [len(indexed)]
-      tensor = torch.LongTensor(indexed).to(device)
+#       length = [len(indexed)]
+#       tensor = torch.LongTensor(indexed).to(device)
       
 #       tensor = tensor.unsqueeze(0)
       print(test_tensor.size())
-      length_tensor = torch.LongTensor(length)
+#       length_tensor = torch.LongTensor(length)
 #       test_tensor = Variable(tensor, volatile=True)
 #       test_tensor = test_tensor.cuda()
 #       test_tensor=test_tensor.unsqueeze(1)
-      prediction = torch.sigmoid(model(test_tensor))
+      prediction = torch.sigmoid(model(test_tensor,1))
       
-      print(df['labels'][i])
       
-#       l.append((prediction[0][0].data).cpu().numpy())
-#     df['preds']=l
+      
+    l.append((prediction[0][0].data).cpu().numpy())
+    df['preds']=l
     import csv
     df.to_csv('predidctions.csv')
     return(l)
