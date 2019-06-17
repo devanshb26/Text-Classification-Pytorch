@@ -434,7 +434,7 @@ def predict_sentiment(model):
       indexed = [TEXT.vocab.stoi[t] for t in tokenized]
       length = [len(indexed)]
       tensor = torch.LongTensor(indexed).to(device)
-      tensor = tensor.unsqueeze(1)
+#       tensor = tensor.unsqueeze(1)
       length_tensor = torch.LongTensor(length)
       
       prediction = torch.sigmoid(model(tensor))
