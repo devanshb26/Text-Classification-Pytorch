@@ -216,7 +216,7 @@ padding=0
 keep_probab=0.4
 
 
-model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
 # model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
@@ -389,8 +389,8 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
     
     
-N_EPOCHS = 1
-best_valid_f1 = float(-1)
+N_EPOCHS = 20
+best_valid_f1 = float(0)
 c=0
 for epoch in range(N_EPOCHS):
 
