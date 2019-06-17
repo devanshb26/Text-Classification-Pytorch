@@ -442,7 +442,7 @@ def predict_sentiment(model):
       test_sen = torch.LongTensor(test_sen)
       test_tensor = Variable(test_sen, volatile=True)
       test_tensor = test_tensor.cuda()
-      test_tensor=test_tensor.reshape([1,test_tensor.shape[0])
+      test_tensor=test_tensor.reshape([1,test_tensor.shape[0]])
 #       length = [len(indexed)]
 #       tensor = torch.LongTensor(indexed).to(device)
       
