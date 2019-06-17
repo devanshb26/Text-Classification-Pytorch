@@ -256,6 +256,7 @@ def train(model, iterator, optimizer, criterion):
 
   for batch in iterator:
       text= batch.text[0]
+      print(text.size())
       target=batch.label
 #       target = torch.autograd.Variable(target).long()
       target=target.reshape([target.shape[0],1])
@@ -355,7 +356,7 @@ def evaluate(model, iterator, criterion):
 
       for batch in iterator:
           text= batch.text[0]
-	  print(text.size())
+	  
           predictions = model(text)
 # 	  predictions=predictions.reshape([predictions.shape[0]])
           target=batch.label
