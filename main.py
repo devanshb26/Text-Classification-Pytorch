@@ -437,7 +437,7 @@ def predict_sentiment(model):
       length = [len(indexed)]
       tensor = torch.LongTensor(indexed).to(device)
       print(tensor.size())
-      tensor = tensor.unsqueeze(1)
+      tensor = tensor.unsqueeze(2)
       print(tensor.size())
       length_tensor = torch.LongTensor(length)
 #       test_tensor = Variable(tensor, volatile=True)
