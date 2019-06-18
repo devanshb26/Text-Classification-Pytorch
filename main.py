@@ -213,7 +213,7 @@ out_channels=192
 kernel_heights=[2,3,4,5]
 stride=1
 padding=0
-keep_probab=0.4
+keep_probab=0.3
 
 
 # model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
