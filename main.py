@@ -453,7 +453,7 @@ def predict_sentiment(model):
 #       test_tensor = Variable(tensor, volatile=True)
 #       test_tensor = test_tensor.cuda()
 #       test_tensor=test_tensor.unsqueeze(1)
-      prediction = torch.sigmoid(model(test_tensor))
+      prediction = torch.sigmoid(model(test_tensor,1))
       
       
       
