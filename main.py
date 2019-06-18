@@ -389,8 +389,8 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
     
     
-N_EPOCHS = 1
-best_valid_f1 = float(-1)
+N_EPOCHS = 10
+best_valid_f1 = float(0)
 c=0
 for epoch in range(N_EPOCHS):
 
@@ -437,7 +437,7 @@ def predict_sentiment(model):
       tokenized = TEXT.preprocess(df['data'][i])
       
       indexed = [TEXT.vocab.stoi[t] for t in tokenized]
-      print(len(tokenized))
+#       print(len(tokenized))
       test_sen = np.asarray(indexed)
       test_sen=np.asarray(test_sen)
       test_sen = torch.LongTensor(test_sen)
@@ -454,7 +454,7 @@ def predict_sentiment(model):
 #       test_tensor = test_tensor.cuda()
 #       test_tensor=test_tensor.unsqueeze(1)
       prediction = torch.sigmoid(model(test_tensor,1))
-      print(prediction)
+#       print(prediction)
       l.append(((prediction[0][0]).data).cpu().numpy())
     
     df['preds']=l
