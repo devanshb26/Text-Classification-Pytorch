@@ -30,7 +30,7 @@ class AttentionModel(torch.nn.Module):
 		
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
-		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
+		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,dropout=dropout)
 		self.fc1 = nn.Linear(hidden_size*2, 150)
 # 		nn.init.kaiming_normal_(self.fc1.weight)
 		self.fc2 = nn.Linear(150, 25)
@@ -101,7 +101,7 @@ class AttentionModel(torch.nn.Module):
 			
 		output, (final_hidden_state, final_cell_state) = self.lstm(input) # final_hidden_state.size() = (1, batch_size, hidden_size) 
 		output = output.permute(1, 0, 2) # output.size() = (batch_size, num_seq, hidden_size)
-		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
+# 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
 		attn_output = self.dropout(self.relu(self.attention_net(output, final_hidden_state)))
 		logits = self.relu(self.fc1(attn_output))
 		logits=self.dropout(logits)
