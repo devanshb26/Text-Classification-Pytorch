@@ -546,6 +546,7 @@ def predict_sentiment(model):
 	#       print(prediction)
 	      	l.append(((prediction[0][0]).data).cpu().numpy())
 	      else:
+		print(233)
 		l.append(-1)
 		
 		
