@@ -216,8 +216,8 @@ padding=0
 keep_probab=0.3
 
 
-# model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
@@ -437,30 +437,33 @@ def predict_sentiment(model):
 		
 	    for i in range(len(df)):
 	      tokenized = TEXT.preprocess(df['data'][i])
+              if len(tokenized)<4:
+			indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+		#       print(len(tokenized))
+		        print(i)
+		        test_sen = np.asarray(indexed)
+		        test_sen=np.asarray(test_sen)
+		        test_sen = torch.LongTensor(test_sen)
+		# 	      F.pad(test_sen, pad=(0, 40-test_sen.shape[0]), mode='constant', value=0)
+		        print(test_sen.size())
+		        test_tensor = Variable(test_sen, volatile=True)
+		        test_tensor = test_tensor.cuda()
+		        test_tensor=test_tensor.reshape([1,test_sen.shape[0]])
+		#       length = [len(indexed)]
+		#       tensor = torch.LongTensor(indexed).to(device)
 
-	      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
-	#       print(len(tokenized))
-	      print(i)
-	      test_sen = np.asarray(indexed)
-	      test_sen=np.asarray(test_sen)
-	      test_sen = torch.LongTensor(test_sen)
-	      F.pad(test_sen, pad=(0, 40-test_sen.shape[0]), mode='constant', value=0)
-	      print(test_sen.size())
-	      test_tensor = Variable(test_sen, volatile=True)
-	      test_tensor = test_tensor.cuda()
-	      test_tensor=test_tensor.reshape([1,test_sen.shape[0]])
-	#       length = [len(indexed)]
-	#       tensor = torch.LongTensor(indexed).to(device)
-
-	#       tensor = tensor.unsqueeze(0)
-	#       print(test_tensor.size())
-	#       length_tensor = torch.LongTensor(length)
-	#       test_tensor = Variable(tensor, volatile=True)
-	#       test_tensor = test_tensor.cuda()
-	#       test_tensor=test_tensor.unsqueeze(1)
-	      prediction = torch.sigmoid(model(test_tensor,1))
-	#       print(prediction)
-	      l.append(((prediction[0][0]).data).cpu().numpy())
+		#       tensor = tensor.unsqueeze(0)
+		#       print(test_tensor.size())
+		#       length_tensor = torch.LongTensor(length)
+		#       test_tensor = Variable(tensor, volatile=True)
+		#       test_tensor = test_tensor.cuda()
+		#       test_tensor=test_tensor.unsqueeze(1)
+		        prediction = torch.sigmoid(model(test_tensor,1))
+		#       print(prediction)
+		        l.append(((prediction[0][0]).data).cpu().numpy())
+	      else:
+		l.append('**')
+		
 
     df['preds']=l
     import csv
