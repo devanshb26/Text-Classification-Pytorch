@@ -389,7 +389,7 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
     
     
-N_EPOCHS = 2
+N_EPOCHS = 20
 best_valid_f1 = float(0)
 c=0
 for epoch in range(N_EPOCHS):
@@ -440,6 +440,7 @@ def predict_sentiment(model):
 
 	      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
 	#       print(len(tokenized))
+	      print(i)
 	      test_sen = np.asarray(indexed)
 	      test_sen=np.asarray(test_sen)
 	      test_sen = torch.LongTensor(test_sen)
