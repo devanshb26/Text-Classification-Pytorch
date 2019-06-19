@@ -545,9 +545,10 @@ def predict_sentiment(model):
 	      	prediction = torch.sigmoid(model(test_tensor,1))
 	#       print(prediction)
 	      	l.append(((prediction[0][0]).data).cpu().numpy())
+	      
+	
 	      else:
-		print(233)
-		l.append(-1)
+			l.append(-1)
 		
 		
     df['preds']=l
