@@ -429,27 +429,109 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 ###############################################
 
 
+def evaluate(model, iterator, criterion):
+
+  epoch_loss = 0
+  epoch_acc = 0
+  epoch_f1=0
+  y_tot=np.array([])
+  pred_tot=np.array([])
+  model.eval()
+
+  with torch.no_grad():
+
+      for batch in iterator:
+          text= batch.text[0]
+	  
+          predictions = model(text)
+# 	  predictions=predictions.reshape([predictions.shape[0]])
+          target=batch.label
+	  
+#         target = torch.autograd.Variable(target).long()
+          target=target.reshape([target.shape[0],1])
+          loss = criterion(predictions, target)
+          
+          acc,f1,y_mini,pred_mini = binary_accuracy(predictions, target)
+
+          epoch_loss += loss.item()
+          epoch_acc += acc.item()
+          epoch_f1+=f1
+          y_tot=np.concatenate([y_tot,y_mini.flatten()])
+          pred_tot=np.concatenate([pred_tot,pred_mini.flatten()])
+  f1=f1_score(y_tot,pred_tot,average='binary')
+  f1_macro=f1_score(y_tot,pred_tot,average='macro')
+  precision=precision_score(y_tot,pred_tot,average='binary')	
+  print(len(y_tot))
+  print(cr(y_tot,pred_tot))
+  print(cm(y_tot,pred_tot))
+  return epoch_loss / len(iterator), epoch_acc / len(iterator),epoch_f1/len(iterator),f1,f1_macro,precision
+  
+import time
+
+def epoch_time(start_time, end_time):
+    elapsed_time = end_time - start_time
+    elapsed_mins = int(elapsed_time / 60)
+    elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
+    return elapsed_mins, elapsed_secs
+    
+    
+N_EPOCHS = 20
+best_valid_f1 = float(0)
+c=0
+for epoch in range(N_EPOCHS):
+
+  start_time = time.time()
+
+  train_loss, train_acc,train_f1 = train(model, train_iter, optimizer, criterion)
+  valid_loss, valid_acc,valid_f1,f1,f1_macro,valid_precision = evaluate(model, valid_iter, criterion)
+  test_loss, test_acc,test_f1,f1_test,f1_macro_test,test_precision = evaluate(model, test_iter, criterion)
+  end_time = time.time()
+
+  epoch_mins, epoch_secs = epoch_time(start_time, end_time)
+
+  if f1 > best_valid_f1:
+      best_valid_f1 = f1
+      c=0
+      torch.save(model.state_dict(), 'tut4-model.pt')
+  else:
+    c=c+1
+#   if c==6:
+#     print(epoch)
+#     break
+  print(f'Epoch: {epoch+1:02} | Epoch Time: {epoch_mins}m {epoch_secs}s')
+  print(f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}% | Train_f1 : {train_f1:.4f}')
+  print(f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}% | Valid_f1 : {f1:.4f}')
+  print(f'\t test. Loss: {test_loss:.3f} |  test. Acc: {test_acc*100:.2f}% | test_f1 : {test_f1:.4f}| test_f1_bin : {f1_test:.4f}')
+
+
+
+model.load_state_dict(torch.load('tut4-model.pt'))
+
+test_loss, test_acc,test_f1,f1,f1_macro,precision = evaluate(model, test_iter, criterion)
+
+print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1 : {test_f1:.4f}')
+print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_bin : {f1:.4f}')
+print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac : {f1_macro:.4f}')   
+###############################################
+
+
 def predict_sentiment(model):
     model.eval()
     l=[]
     df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
-    for i in range(len(df)):
-    	
-	tokenized=TEXT.preprocess(df['data'][i])
-    	
-	if len(tokenized)>=4:
-	
-		indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+    with torch.no_grad():
+		
+	    for i in range(len(df)):
+	      tokenized = TEXT.preprocess(df['data'][i])
+
+	      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
 	#       print(len(tokenized))
-		print(i)
-		test_sen = np.asarray(indexed)
-		test_sen=np.asarray(test_sen)
-		test_sen = torch.LongTensor(test_sen)
-	# 	      F.pad(test_sen, pad=(0, 40-test_sen.shape[0]), mode='constant', value=0)
-		print(test_sen.size())
-		test_tensor = Variable(test_sen, volatile=True)
-		test_tensor = test_tensor.cuda()
-		test_tensor=test_tensor.reshape([1,test_sen.shape[0]])
+	      test_sen = np.asarray(indexed)
+	      test_sen=np.asarray(test_sen)
+	      test_sen = torch.LongTensor(test_sen)
+	      test_tensor = Variable(test_sen, volatile=True)
+	      test_tensor = test_tensor.cuda()
+	      test_tensor=test_tensor.reshape([1,test_tensor.shape[0]])
 	#       length = [len(indexed)]
 	#       tensor = torch.LongTensor(indexed).to(device)
 
@@ -459,13 +541,12 @@ def predict_sentiment(model):
 	#       test_tensor = Variable(tensor, volatile=True)
 	#       test_tensor = test_tensor.cuda()
 	#       test_tensor=test_tensor.unsqueeze(1)
-		prediction = torch.sigmoid(model(test_tensor,1))
+	      if len(tokenized)>=4:
+	      	prediction = torch.sigmoid(model(test_tensor,1))
 	#       print(prediction)
-		l.append(((prediction[0][0]).data).cpu().numpy())
-	else:
+	      	l.append(((prediction[0][0]).data).cpu().numpy())
+	      else:
 		l.append('**')
-	
-
     df['preds']=l
     import csv
     df.to_csv('predidctions.csv')
