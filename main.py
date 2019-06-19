@@ -389,7 +389,7 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
     
     
-N_EPOCHS = 20
+N_EPOCHS = 2
 best_valid_f1 = float(0)
 c=0
 for epoch in range(N_EPOCHS):
@@ -446,7 +446,7 @@ def predict_sentiment(model):
 	      F.pad(test_sen, pad=(0, 40-test_tensor.shape[0]), mode='constant', value=0)
 	      test_tensor = Variable(test_sen, volatile=True)
 	      test_tensor = test_tensor.cuda()
-	      test_tensor=test_tensor.reshape([1,test_tensor.shape[0]])
+	      test_tensor=test_tensor.reshape([1,test_sen.shape[0]])
 	#       length = [len(indexed)]
 	#       tensor = torch.LongTensor(indexed).to(device)
 
