@@ -210,14 +210,14 @@ DROPOUT = 0.2
 embedding_length = 100
 in_channels=1
 out_channels=192
-kernel_heights=[2,3,4,5]
+kernel_heights=[1,2,3,4]
 stride=1
 padding=0
-keep_probab=0.4
+keep_probab=0.3
 
 
-model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
