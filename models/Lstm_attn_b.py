@@ -31,7 +31,7 @@ class AttentionModel(torch.nn.Module):
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weights = nn.Parameter(weights, requires_grad=False)
 		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,dropout=dropout)
-		self.fc1 = nn.Linear(hidden_size*2, 150)
+		self.fc1 = nn.Linear(hidden_size, 150)
 # 		nn.init.kaiming_normal_(self.fc1.weight)
 		self.fc2 = nn.Linear(150, 25)
 # 		nn.init.kaiming_normal_(self.fc2.weight)
