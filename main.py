@@ -444,6 +444,7 @@ def predict_sentiment(model):
 	      test_sen=np.asarray(test_sen)
 	      test_sen = torch.LongTensor(test_sen)
 	      F.pad(test_sen, pad=(0, 40-test_sen.shape[0]), mode='constant', value=0)
+	      print(test_sen.size())
 	      test_tensor = Variable(test_sen, volatile=True)
 	      test_tensor = test_tensor.cuda()
 	      test_tensor=test_tensor.reshape([1,test_sen.shape[0]])
