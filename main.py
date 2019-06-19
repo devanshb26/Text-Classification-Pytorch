@@ -546,6 +546,8 @@ def predict_sentiment(model):
 	#       print(prediction)
 	      	l.append(((prediction[0][0]).data).cpu().numpy())
 	      else:
+		
+		
 		l.append('**')
 		
     df['preds']=l
