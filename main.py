@@ -434,8 +434,11 @@ def predict_sentiment(model):
     l=[]
     df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
     for i in range(len(df)):
-	tokenized = TEXT.preprocess(df['data'][i])
+    	
+	tokenized=TEXT.preprocess(df['data'][i])
+    	
 	if len(tokenized)>=4:
+	
 		indexed = [TEXT.vocab.stoi[t] for t in tokenized]
 	#       print(len(tokenized))
 		print(i)
