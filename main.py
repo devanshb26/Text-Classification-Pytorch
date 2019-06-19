@@ -547,6 +547,7 @@ def predict_sentiment(model):
 	      	l.append(((prediction[0][0]).data).cpu().numpy())
 	      else:
 		l.append('**')
+		
     df['preds']=l
     import csv
     df.to_csv('predidctions.csv')
