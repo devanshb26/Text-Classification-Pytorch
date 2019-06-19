@@ -216,8 +216,8 @@ padding=0
 keep_probab=0.3
 
 
-model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
@@ -436,7 +436,7 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 def predict_sentiment(model):
     model.eval()
     l=[]
-    df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
+    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
     with torch.no_grad():
 		
 	    for i in range(len(df)):
