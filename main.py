@@ -217,8 +217,8 @@ padding=0
 keep_probab=0.3
 
 
-# model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
@@ -460,14 +460,13 @@ def predict_sentiment(model):
 	#       test_tensor = Variable(tensor, volatile=True)
 	#       test_tensor = test_tensor.cuda()
 	#       test_tensor=test_tensor.unsqueeze(1)
-	      if len(tokenized)>=4:
-	      	prediction = torch.sigmoid(model(test_tensor,1))
+	    
+	      prediction = torch.sigmoid(model(test_tensor,1))
 	#       print(prediction)
-	      	l.append(((prediction[0][0]).data).cpu().numpy())
+	      l.append(((prediction[0][0]).data).cpu().numpy())
 	      
 	
-	      else:
-	      	l.append(-1)
+	      
 		
 		
     df['preds']=l
