@@ -136,7 +136,7 @@ def tokenize_en(text):
 
 #########################
 from torch.backends import cudnn
-seed = 123
+seed = 1234
 
 # seed=random.randint(0, 10000)
 print(seed)
@@ -208,7 +208,7 @@ hidden_size = 256
 N_LAYERS = 2
 #changed from 0.2 to 0.4
 DROPOUT = 0.2
-embedding_length = 300
+embedding_length = 100
 in_channels=1
 out_channels=250
 kernel_heights=[1,2,3,4]
@@ -217,8 +217,8 @@ padding=0
 keep_probab=0.3
 
 
-model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
