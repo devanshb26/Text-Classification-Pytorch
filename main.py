@@ -136,7 +136,7 @@ def tokenize_en(text):
 
 #########################
 from torch.backends import cudnn
-seed = 1234
+seed = 123
 
 # seed=random.randint(0, 10000)
 print(seed)
