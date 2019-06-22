@@ -85,6 +85,7 @@ class CNN_LSTM(nn.Module):
 		input = self.word_embeddings(input_sentences)
 		# input.size() = (batch_size, num_seq, embedding_length)
 		input_cnn = input.unsqueeze(1)
+		input = input.permute(1, 0, 2)
 		input_cnn=self.dropout_embd(input_cnn)
 		input=self.dropout_embd(input)
                 
