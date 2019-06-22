@@ -153,6 +153,7 @@ torch.backends.cudnn.benchmark = False
 ######################################
 from models.LSTM import LSTMClassifier
 from models.LSTM_Attn import AttentionModel
+# from models.Lstm_attn_b import AttentionModel
 from models.RCNN import RCNN
 from models.CNN import CNN
 from models.selfAttention import SelfAttention
@@ -216,8 +217,8 @@ padding=0
 keep_probab=0.3
 
 
-# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
