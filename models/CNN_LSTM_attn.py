@@ -34,18 +34,14 @@ class CNN_LSTM(nn.Module):
 		
 		self.word_embeddings = nn.Embedding(vocab_size, embedding_length)
 		self.word_embeddings.weight = nn.Parameter(weights, requires_grad=False)
+		self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
 		self.conv1 = nn.Conv2d(in_channels, out_channels, (kernel_heights[0], embedding_length), stride, padding)
 		self.conv2 = nn.Conv2d(in_channels, out_channels, (kernel_heights[1], embedding_length), stride, padding)
 		self.conv3 = nn.Conv2d(in_channels, out_channels, (kernel_heights[2], embedding_length), stride, padding)
 		self.conv4 = nn.Conv2d(in_channels, out_channels, (kernel_heights[3], embedding_length), stride, padding)
 		self.dropout = nn.Dropout(keep_probab)
 		self.dropout_embd = nn.Dropout(0.5)
-    
-                self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
-    
-    
-    
-		self.fc1 = nn.Linear(len(kernel_heights)*out_channels+hidden_size*2, 300)
+                self.fc1 = nn.Linear(len(kernel_heights)*out_channels+hidden_size*2, 300)
 		self.fc2 = nn.Linear(300,150)
 		self.fc3 = nn.Linear(150,75)
 		self.label = nn.Linear(75,output_size)
