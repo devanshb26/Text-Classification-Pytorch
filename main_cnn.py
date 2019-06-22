@@ -24,7 +24,7 @@ nlp = spacy.load('en')
 import random
 
 
-import re
+
 #########################
 import re
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
