@@ -51,7 +51,7 @@ class CNN_LSTM(nn.Module):
 		attn_weights = torch.bmm(lstm_output, hidden.unsqueeze(2)).squeeze(2)
 		soft_attn_weights = F.softmax(attn_weights, 1)
 		new_hidden_state = torch.bmm(lstm_output.transpose(1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
-		print(new_hidden_state.size())
+# 		print(new_hidden_state.size())
 		return new_hidden_state
 	def conv_block(self, input, conv_layer):
 		
@@ -96,7 +96,7 @@ class CNN_LSTM(nn.Module):
 		max_out4 = self.conv_block(input_cnn, self.conv4)
 		
 		all_out = torch.cat((max_out1, max_out2, max_out3, max_out4), 1)
-		print(all_out.size())
+# 		print(all_out.size())
 		output, (final_hidden_state, final_cell_state) = self.lstm(input) # final_hidden_state.size() = (1, batch_size, hidden_size) 
 		output = output.permute(1, 0, 2) # output.size() = (batch_size, num_seq, hidden_size)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
