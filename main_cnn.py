@@ -24,7 +24,7 @@ nlp = spacy.load('en')
 import random
 
 
-
+import re
 #########################
 import re
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -156,7 +156,6 @@ from models.LSTM_Attn import AttentionModel
 # from models.Lstm_attn_b import AttentionModel
 from models.RCNN import RCNN
 from models.CNN import CNN
-from models.CNN_LSTM_attn import CNN_LSTM 
 from models.selfAttention import SelfAttention
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data.load_dataset()
@@ -217,10 +216,8 @@ stride=1
 padding=0
 keep_probab=0.3
 
-model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-# model = CNN(batch_size, output_size,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
-# loss_fn = F.cross_entropy
-# model = CNN_LSTM(batch_size, output_size, hidden_size,N_LAYERS,DROPOUT,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
