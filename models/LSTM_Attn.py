@@ -73,7 +73,7 @@ class AttentionModel(torch.nn.Module):
 		attn_weights = torch.bmm(lstm_output, hidden.unsqueeze(2)).squeeze(2)
 		soft_attn_weights = F.softmax(attn_weights, 1)
 		new_hidden_state = torch.bmm(lstm_output.transpose(1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
-		print(new_hidden_state.size())
+# 		print(new_hidden_state.size())
 		return new_hidden_state
 	
 	def forward(self, input_sentences, batch_size=None):
