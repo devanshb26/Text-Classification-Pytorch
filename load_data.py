@@ -104,6 +104,7 @@ def tokenize_en(text):
   text = re.sub(r"e - mail", "email", text)
   text = re.sub(r"j k", "jk", text)
   text = re.sub(' +', ' ',text)
+  text = re.sub(r"-", "", text)
   tokenized=[tok.text for tok in nlp(text)]
 #   t=[]
 #   for tok in tokenized:
