@@ -51,6 +51,7 @@ class CNN_LSTM(nn.Module):
 		attn_weights = torch.bmm(lstm_output, hidden.unsqueeze(2)).squeeze(2)
 		soft_attn_weights = F.softmax(attn_weights, 1)
 		new_hidden_state = torch.bmm(lstm_output.transpose(1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
+		print(new_hidden_state.size())
 		return new_hidden_state	
 	def conv_block(self, input, conv_layer):
 		
@@ -100,7 +101,6 @@ class CNN_LSTM(nn.Module):
 		output = output.permute(1, 0, 2)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
 		attn_output = self.dropout(F.relu(self.attention_net(output, final_hidden_state)))
-                print(attn_output.size())
 		all_out = torch.cat((all_out,attn_output),dim = 1)
 		fc_in = self.dropout(all_out)
 		logits = F.relu(self.fc1(fc_in))
