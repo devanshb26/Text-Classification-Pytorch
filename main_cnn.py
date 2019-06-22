@@ -205,7 +205,7 @@ TEXT, vocab_size, word_embeddings, train_iter, valid_iter, test_iter = load_data
 # learning_rate = 2e-5
 batch_size = 64
 output_size = 1
-hidden_size = 64
+hidden_size = 256
 N_LAYERS = 2
 #changed from 0.2 to 0.4
 DROPOUT = 0.2
@@ -217,10 +217,10 @@ stride=1
 padding=0
 keep_probab=0.3
 
-# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
 # model = CNN(batch_size, output_size,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
-model = CNN_LSTM(batch_size, output_size, hidden_size,N_LAYERS,DROPOUT,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = CNN_LSTM(batch_size, output_size, hidden_size,N_LAYERS,DROPOUT,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
