@@ -159,7 +159,7 @@ def load_dataset(test_sen=None):
     print ("Label Length: " + str(len(LABEL.vocab)))
 
 #     train_data, valid_data = train_data.split() # Further splitting of training_data to create new training_data & validation_data
-    train_iter, valid_iter, test_iter = data.BucketIterator.splits((train_data, valid_data, test_data), batch_size=32, sort_key=lambda x: len(x.text), repeat=False, shuffle=True,device=device)
+    train_iter, valid_iter, test_iter = data.BucketIterator.splits((train_data, valid_data, test_data), batch_size=64, sort_key=lambda x: len(x.text), repeat=False, shuffle=True,device=device)
 
     '''Alternatively we can also use the default configurations'''
     # train_iter, test_iter = datasets.IMDB.iters(batch_size=32)
