@@ -84,8 +84,9 @@ class CNN_LSTM(nn.Module):
 		input = self.word_embeddings(input_sentences)
 		# input.size() = (batch_size, num_seq, embedding_length)
 		input_cnn = input.unsqueeze(1)
+		input_cnn=self.dropout_embd(input_cnn)
 		input=self.dropout_embd(input)
-                input_cnn=self.dropout_embd(input_cnn)
+                
 		# input.size() = (batch_size, 1, num_seq, embedding_length)
 		max_out1 = self.conv_block(input_cnn, self.conv1)
 		max_out2 = self.conv_block(input_cnn, self.conv2)
