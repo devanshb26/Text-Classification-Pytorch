@@ -98,7 +98,7 @@ class CNN_LSTM(nn.Module):
 		# all_out.size() = (batch_size, num_kernels*out_channels)
 		output = output.permute(1, 0, 2)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
-		attn_output = self.dropout(self.relu(self.attention_net(output, final_hidden_state)))
+		attn_output = self.dropout(F.relu(self.attention_net(output, final_hidden_state)))
                 
 		all_out = torch.cat((all_out,attn_output),dim = 1)
 		fc_in = self.dropout(all_out)
