@@ -40,12 +40,19 @@ class CNN_LSTM(nn.Module):
 		self.conv3 = nn.Conv2d(in_channels, out_channels, (kernel_heights[2], embedding_length), stride, padding)
 		self.conv4 = nn.Conv2d(in_channels, out_channels, (kernel_heights[3], embedding_length), stride, padding)
 		self.dropout = nn.Dropout(keep_probab)
-		self.dropout_embd = nn.Dropout(0.5)
+		
+		
+		
+		
                 self.fc1 = nn.Linear(len(kernel_heights)*out_channels+hidden_size*2, 300)
 		self.fc2 = nn.Linear(300,150)
 		self.fc3 = nn.Linear(150,75)
 		self.label = nn.Linear(75,output_size)
+		self.dropout_embd = nn.Dropout(0.5)
+		
+		
 	def conv_block(self, input, conv_layer):
+		
 		conv_out = conv_layer(input)# conv_out.size() = (batch_size, out_channels, dim, 1)
 		activation = F.relu(conv_out.squeeze(3))# activation.size() = (batch_size, out_channels, dim1)
 		max_out = F.max_pool1d(activation, activation.size()[2]).squeeze(2)# maxpool_out.size() = (batch_size, out_channels)
