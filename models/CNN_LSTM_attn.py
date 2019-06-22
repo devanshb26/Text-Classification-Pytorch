@@ -57,7 +57,7 @@ class CNN_LSTM(nn.Module):
 		return max_out
     
     
- def attention_net(self, lstm_output, final_state):
+       def attention_net(self, lstm_output, final_state):
 
 		""" 
 		Now we will incorporate Attention mechanism in our LSTM model. In this new model, we will use attention to compute soft alignment score corresponding
@@ -114,7 +114,7 @@ class CNN_LSTM(nn.Module):
 		# input.size() = (batch_size, num_seq, embedding_length)
 		input_cnn = input.unsqueeze(1)
 		input=self.dropout_embd(input)
-    input_cnn=self.dropout_embd(input_cnn)
+                input_cnn=self.dropout_embd(input_cnn)
 		# input.size() = (batch_size, 1, num_seq, embedding_length)
 		max_out1 = self.conv_block(input_cnn, self.conv1)
 		max_out2 = self.conv_block(input_cnn, self.conv2)
@@ -123,11 +123,11 @@ class CNN_LSTM(nn.Module):
 		
 		all_out = torch.cat((max_out1, max_out2, max_out3, max_out4), 1)
 		# all_out.size() = (batch_size, num_kernels*out_channels)
-    output, (final_hidden_state, final_cell_state) = self.lstm(input) # final_hidden_state.size() = (1, batch_size, hidden_size) 
+                output, (final_hidden_state, final_cell_state) = self.lstm(input) # final_hidden_state.size() = (1, batch_size, hidden_size) 
 		output = output.permute(1, 0, 2) # output.size() = (batch_size, num_seq, hidden_size)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
 		attn_output = self.dropout(self.relu(self.attention_net(output, final_hidden_state)))
-    all_out = torch.cat((all_out,attn_output), dim = 1)
+                all_out = torch.cat((all_out,attn_output), dim = 1)
 		fc_in = self.dropout(all_out)
 		logits = F.relu(self.fc1(fc_in))
 		logits=self.dropout(logits)
