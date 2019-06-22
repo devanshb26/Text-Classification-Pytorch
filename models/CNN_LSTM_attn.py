@@ -70,12 +70,10 @@ class CNN_LSTM(nn.Module):
 					new_hidden_state.size() = (batch_size, hidden_size)
 					  
 		"""
-		
 		hidden = final_state.squeeze(0)
 		attn_weights = torch.bmm(lstm_output, hidden.unsqueeze(2)).squeeze(2)
 		soft_attn_weights = F.softmax(attn_weights, 1)
 		new_hidden_state = torch.bmm(lstm_output.transpose(1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
-		
 		return new_hidden_state	
 	def conv_block(self, input, conv_layer):
 		
