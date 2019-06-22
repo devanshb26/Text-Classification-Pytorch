@@ -46,17 +46,8 @@ class CNN_LSTM(nn.Module):
 		self.label = nn.Linear(75,output_size)
 		self.dropout_embd = nn.Dropout(0.5)
 		
+	def attention_net(self,lstm_output,final_state):
 		
-	def conv_block(self, input, conv_layer):
-		
-		conv_out = conv_layer(input)# conv_out.size() = (batch_size, out_channels, dim, 1)
-		activation = F.relu(conv_out.squeeze(3))# activation.size() = (batch_size, out_channels, dim1)
-		max_out = F.max_pool1d(activation, activation.size()[2]).squeeze(2)# maxpool_out.size() = (batch_size, out_channels)
-		
-		return max_out
-    
-    
-        def attention_net(self,lstm_output,final_state):
                 """ 
 		Now we will incorporate Attention mechanism in our LSTM model. In this new model, we will use attention to compute soft alignment score corresponding
 		between each of the hidden_state and the last hidden_state of the LSTM. We will be using torch.bmm for the batch matrix multiplication.
@@ -85,7 +76,14 @@ class CNN_LSTM(nn.Module):
 		soft_attn_weights = F.softmax(attn_weights, 1)
 		new_hidden_state = torch.bmm(lstm_output.transpose(1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
 		
-		return new_hidden_state
+		return new_hidden_state	
+	def conv_block(self, input, conv_layer):
+		
+		conv_out = conv_layer(input)# conv_out.size() = (batch_size, out_channels, dim, 1)
+		activation = F.relu(conv_out.squeeze(3))# activation.size() = (batch_size, out_channels, dim1)
+		max_out = F.max_pool1d(activation, activation.size()[2]).squeeze(2)# maxpool_out.size() = (batch_size, out_channels)
+		
+		return max_out
 	
 	def forward(self, input_sentences, batch_size=None):
 		
