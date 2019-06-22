@@ -136,7 +136,7 @@ def tokenize_en(text):
 
 #########################
 from torch.backends import cudnn
-seed = 123
+seed = 1234
 
 # seed=random.randint(0, 10000)
 print(seed)
@@ -437,7 +437,7 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 def predict_sentiment(model):
     model.eval()
     l=[]
-    df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
+    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
     with torch.no_grad():
 		
 	    for i in range(len(df)):
