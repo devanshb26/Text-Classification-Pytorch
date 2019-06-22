@@ -4,7 +4,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 class CNN_LSTM(nn.Module):
-	def __init__(self, batch_size, output_size, hidden_size,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, weights):
+	def __init__(self, batch_size, output_size, hidden_size,n_layers,dropout,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, weights):
 		super(CNN, self).__init__()
 		
 		"""
@@ -41,7 +41,7 @@ class CNN_LSTM(nn.Module):
 		self.dropout = nn.Dropout(keep_probab)
 		self.dropout_embd = nn.Dropout(0.5)
     
-    self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
+                self.lstm = nn.LSTM(embedding_length, hidden_size,num_layers=n_layers,bidirectional=True,dropout=dropout)
     
     
     
