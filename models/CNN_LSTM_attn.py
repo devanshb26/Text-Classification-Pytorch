@@ -56,9 +56,8 @@ class CNN_LSTM(nn.Module):
 		return max_out
     
     
-       def attention_net(self, lstm_output, final_state):
-
-		""" 
+        def attention_net(self, lstm_output, final_state):
+                """ 
 		Now we will incorporate Attention mechanism in our LSTM model. In this new model, we will use attention to compute soft alignment score corresponding
 		between each of the hidden_state and the last hidden_state of the LSTM. We will be using torch.bmm for the batch matrix multiplication.
 		
