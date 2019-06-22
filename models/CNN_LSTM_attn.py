@@ -94,12 +94,13 @@ class CNN_LSTM(nn.Module):
 		max_out4 = self.conv_block(input_cnn, self.conv4)
 		
 		all_out = torch.cat((max_out1, max_out2, max_out3, max_out4), 1)
+		print(all_out.size())
 		output,(final_hidden_state,final_cell_state)=self.lstm(input)
 		# all_out.size() = (batch_size, num_kernels*out_channels)
 		output = output.permute(1, 0, 2)
 		final_hidden_state = self.dropout(torch.cat((final_hidden_state[-2,:,:], final_hidden_state[-1,:,:]), dim = 1))
 		attn_output = self.dropout(F.relu(self.attention_net(output, final_hidden_state)))
-                
+                print(attn_output.size())
 		all_out = torch.cat((all_out,attn_output),dim = 1)
 		fc_in = self.dropout(all_out)
 		logits = F.relu(self.fc1(fc_in))
