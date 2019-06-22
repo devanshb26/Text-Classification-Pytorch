@@ -5,7 +5,7 @@ from torch.nn import functional as F
 
 class CNN_LSTM(nn.Module):
 	def __init__(self, batch_size, output_size, hidden_size,n_layers,dropout,in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, weights):
-		super(CNN, self).__init__()
+		super(CNN_LSTM, self).__init__()
 		
 		"""
 		Arguments
