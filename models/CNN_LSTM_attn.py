@@ -40,11 +40,7 @@ class CNN_LSTM(nn.Module):
 		self.conv3 = nn.Conv2d(in_channels, out_channels, (kernel_heights[2], embedding_length), stride, padding)
 		self.conv4 = nn.Conv2d(in_channels, out_channels, (kernel_heights[3], embedding_length), stride, padding)
 		self.dropout = nn.Dropout(keep_probab)
-		
-		
-		
-		
-                self.fc1 = nn.Linear(len(kernel_heights)*out_channels+hidden_size*2, 300)
+		self.fc1 = nn.Linear(len(kernel_heights)*out_channels+hidden_size*2,300)
 		self.fc2 = nn.Linear(300,150)
 		self.fc3 = nn.Linear(150,75)
 		self.label = nn.Linear(75,output_size)
