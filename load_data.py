@@ -107,7 +107,7 @@ def tokenize_en(text):
   tokenized=[tok.text for tok in nlp(text)]
   t=[]
   for tok in tokenized:
-    if tok == " " or tok == "  ":
+    if tok == " " or tok == "  " or tok == "-":
       continue
     else:
       t.append(tok)
@@ -138,9 +138,9 @@ def load_dataset(test_sen=None):
     fields = [(None,None),(None,None),('text', TEXT),('label', LABEL)]
     train_data, valid_data, test_data = data.TabularDataset.splits(
                                         path = '',
-                                        train = 'V1.4_Training_original.csv',
-                                        validation = 'SubtaskA_Trial_Test_Labeled - Copy.csv',
-                                        test = 'SubtaskA_EvaluationData_labeled.csv',
+                                        train = 'V1.4_Training.csv',
+                                        validation = 'SubtaskB_Trial_Test_Labeled - Copy.csv',
+                                        test = 'SubtaskB_EvaluationData_labeled.csv',
 #                                         train = 'train_spacy.csv',
 #                                         validation = 'valid_spacy.csv',
 #                                         test = 'test_spacy.csv',
