@@ -122,7 +122,7 @@ def load_dataset(test_sen=None):
     Field : A class that stores information about the way of preprocessing
     fix_length : An important property of TorchText is that we can let the input to be variable length, and TorchText will
                  dynamically pad each sequence to the longest sequence in that "batch". But here we are using fi_length which
-                 will pad each sequence to have a fix length of 40.
+                 will pad each sequence to have a fix length of 200.
                  
     build_vocab : It will first make a vocabulary or dictionary mapping all the unique words present in the train_data to an
                   idx and then after it will use GloVe word embedding to map the index to the corresponding word embedding.
@@ -133,14 +133,14 @@ def load_dataset(test_sen=None):
     """
     
 #     tokenize = lambda x: x.split()
-    TEXT = data.Field(sequential=True, tokenize=tokenize_en, lower=True, include_lengths=True, batch_first=True,fix_length=40)
+    TEXT = data.Field(sequential=True, tokenize=tokenize_en, lower=True, include_lengths=True, batch_first=True, fix_length=40)
     LABEL = data.LabelField(dtype=torch.float)
     fields = [(None,None),(None,None),('text', TEXT),('label', LABEL)]
     train_data, valid_data, test_data = data.TabularDataset.splits(
                                         path = '',
-                                        train = 'V1.4_Training.csv',
-                                        validation = 'SubtaskB_Trial_Test_Labeled - Copy.csv',
-                                        test = 'SubtaskB_EvaluationData_labeled.csv',
+                                        train = 'V1.4_Training_original.csv',
+                                        validation = 'SubtaskA_Trial_Test_Labeled - Copy.csv',
+                                        test = 'SubtaskA_EvaluationData_labeled.csv',
 #                                         train = 'train_spacy.csv',
 #                                         validation = 'valid_spacy.csv',
 #                                         test = 'test_spacy.csv',
