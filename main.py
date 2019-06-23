@@ -213,11 +213,11 @@ out_channels=192
 kernel_heights=[2,3,4,5]
 stride=1
 padding=0
-keep_probab=0.4
+keep_probab=0.3
 
 
-model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
-# model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
+# model = AttentionModel(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
+model = CNN(batch_size, output_size, in_channels, out_channels, kernel_heights, stride, padding, keep_probab, vocab_size, embedding_length, word_embeddings)
 # loss_fn = F.cross_entropy
 
 import torch.optim as optim
@@ -432,33 +432,31 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 def predict_sentiment(model):
     model.eval()
     l=[]
-    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
-    with torch.no_grad():
-		
-	    for i in range(len(df)):
-	      tokenized = TEXT.preprocess(df['data'][i])
-
-	      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
-	#       print(len(tokenized))
-	      test_sen = np.asarray(indexed)
-	      test_sen=np.asarray(test_sen)
-	      test_sen = torch.LongTensor(test_sen)
-	      test_tensor = Variable(test_sen, volatile=True)
-	      test_tensor = test_tensor.cuda()
-	      test_tensor=test_tensor.reshape([1,test_tensor.shape[0]])
-	#       length = [len(indexed)]
-	#       tensor = torch.LongTensor(indexed).to(device)
-
-	#       tensor = tensor.unsqueeze(0)
-	#       print(test_tensor.size())
-	#       length_tensor = torch.LongTensor(length)
-	#       test_tensor = Variable(tensor, volatile=True)
-	#       test_tensor = test_tensor.cuda()
-	#       test_tensor=test_tensor.unsqueeze(1)
-	      prediction = torch.sigmoid(model(test_tensor,1))
-	#       print(prediction)
-	      l.append(((prediction[0][0]).data).cpu().numpy())
-
+    df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
+    for i in range(len(df)):
+      tokenized = TEXT.preprocess(df['data'][i])
+      
+      indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+#       print(len(tokenized))
+      test_sen = np.asarray(indexed)
+      test_sen=np.asarray(test_sen)
+      test_sen = torch.LongTensor(test_sen)
+      test_tensor = Variable(test_sen, volatile=True)
+      test_tensor = test_tensor.cuda()
+      test_tensor=test_tensor.reshape([1,test_tensor.shape[0]])
+#       length = [len(indexed)]
+#       tensor = torch.LongTensor(indexed).to(device)
+      
+#       tensor = tensor.unsqueeze(0)
+#       print(test_tensor.size())
+#       length_tensor = torch.LongTensor(length)
+#       test_tensor = Variable(tensor, volatile=True)
+#       test_tensor = test_tensor.cuda()
+#       test_tensor=test_tensor.unsqueeze(1)
+      prediction = torch.sigmoid(model(test_tensor,1))
+#       print(prediction)
+      l.append(((prediction[0][0]).data).cpu().numpy())
+    
     df['preds']=l
     import csv
     df.to_csv('predidctions.csv')
