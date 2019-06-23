@@ -153,7 +153,6 @@ torch.backends.cudnn.benchmark = False
 ######################################
 from models.LSTM import LSTMClassifier
 from models.LSTM_Attn import AttentionModel
-# from models.Lstm_attn_b import AttentionModel
 from models.RCNN import RCNN
 from models.CNN import CNN
 from models.selfAttention import SelfAttention
@@ -437,7 +436,7 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 def predict_sentiment(model):
     model.eval()
     l=[]
-    df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
+    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
     with torch.no_grad():
 		
 	    for i in range(len(df)):
@@ -477,5 +476,3 @@ def predict_sentiment(model):
     
     
 a=predict_sentiment(model)
-
-
