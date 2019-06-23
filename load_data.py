@@ -107,7 +107,7 @@ def tokenize_en(text):
   tokenized=[tok.text for tok in nlp(text)]
   t=[]
   for tok in tokenized:
-    if tok == " " or tok == "  " or tok == "-":
+    if tok == " " or tok == "  ":
       continue
     else:
       t.append(tok)
