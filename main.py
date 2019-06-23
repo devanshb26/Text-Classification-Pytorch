@@ -210,10 +210,10 @@ DROPOUT = 0.2
 embedding_length = 100
 in_channels=1
 out_channels=192
-kernel_heights=[1,2,3,4]
+kernel_heights=[2,3,4,5]
 stride=1
 padding=0
-keep_probab=0.3
+keep_probab=0.4
 
 
 model = LSTMClassifier(batch_size, output_size, hidden_size, vocab_size, embedding_length, word_embeddings,N_LAYERS,DROPOUT)
@@ -429,14 +429,10 @@ print(f'Test Loss: {test_loss:.3f} | Test Acc: {test_acc*100:.2f}%| Test_f1_mac 
 ###############################################
 
 
-  
-###############################################
-
-
 def predict_sentiment(model):
     model.eval()
     l=[]
-    df=pd.read_csv("SubtaskB_Trial_Test_Labeled - Copy.csv")
+    df=pd.read_csv("SubtaskA_Trial_Test_Labeled - Copy.csv")
     with torch.no_grad():
 		
 	    for i in range(len(df)):
@@ -459,16 +455,10 @@ def predict_sentiment(model):
 	#       test_tensor = Variable(tensor, volatile=True)
 	#       test_tensor = test_tensor.cuda()
 	#       test_tensor=test_tensor.unsqueeze(1)
-	      if len(tokenized)>=4:
-	      	prediction = torch.sigmoid(model(test_tensor,1))
+	      prediction = torch.sigmoid(model(test_tensor,1))
 	#       print(prediction)
-	      	l.append(((prediction[0][0]).data).cpu().numpy())
-	      
-	
-	      else:
-	      	l.append(-1)
-		
-		
+	      l.append(((prediction[0][0]).data).cpu().numpy())
+
     df['preds']=l
     import csv
     df.to_csv('predidctions.csv')
